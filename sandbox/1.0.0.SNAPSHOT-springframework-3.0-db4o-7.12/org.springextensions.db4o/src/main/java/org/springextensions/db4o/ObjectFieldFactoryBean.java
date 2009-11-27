@@ -26,13 +26,13 @@ import com.db4o.config.ObjectField;
 /**
  * {@link org.springframework.beans.factory.FactoryBean} used for constructing
  * an db4o {@link com.db4o.config.ObjectField}.
- * 
+ *
  * <p>
  * This <code>FactoryBean</code> will construct a <code>ObjectField</code> for
- * the {@link #setFieldName(String) specified field name} on the 
+ * the {@link #setFieldName(String) specified field name} on the
  * {@link #setObjectClass(ObjectClass) specified ObjectClass}.
  * </p>
- * 
+ *
  * <p>
  * By default, this <code>FactoryBean</code> will return new instances of
  * <code>ObjectField</code> (i.e. this <code>FactoryBean</code>  isn't a
@@ -67,13 +67,16 @@ public class ObjectFieldFactoryBean implements InitializingBean, FactoryBean {
 	private String fieldName;
 
 	/**
-	 * Configuration settings to apply to the {@link #ObjectField}
+	 * Configuration settings to apply to the {@link com.db4o.config.ObjectField}
 	 */
 	private Boolean cascadeOnActivate;
+
 	private Boolean cascadeOnDelete;
+
 	private Boolean cascadeOnUpdate;
+
 	private Boolean indexed;
-	private Boolean queryEvaluation;
+
 	private String renameValue;
 
 	/**
@@ -95,7 +98,7 @@ public class ObjectFieldFactoryBean implements InitializingBean, FactoryBean {
 	}
 
 	/**
-	 * Generate the {@link #objectFields} using the specified configuration.
+	 * Generate the {@link com.db4o.config.ObjectField} using the specified configuration.
 	 */
 	private void createObjectField() {
 		this.objectField = this.objectClass.objectField(this.fieldName);
@@ -111,9 +114,6 @@ public class ObjectFieldFactoryBean implements InitializingBean, FactoryBean {
 		}
 		if (this.indexed != null) {
 			this.objectField.indexed(this.indexed.booleanValue());
-		}
-		if (this.queryEvaluation != null) {
-			this.objectField.queryEvaluation(this.queryEvaluation.booleanValue());
 		}
 
 		// post process the ObjectField
@@ -189,13 +189,6 @@ public class ObjectFieldFactoryBean implements InitializingBean, FactoryBean {
 	 */
 	public void setIndexed(Boolean indexed) {
 		this.indexed = indexed;
-	}
-
-	/**
-	 * @see com.db4o.config.ObjectField#queryEvaluation(boolean)
-	 */
-	public void setQueryEvaluation(Boolean queryEvaluation) {
-		this.queryEvaluation = queryEvaluation;
 	}
 
 	/**

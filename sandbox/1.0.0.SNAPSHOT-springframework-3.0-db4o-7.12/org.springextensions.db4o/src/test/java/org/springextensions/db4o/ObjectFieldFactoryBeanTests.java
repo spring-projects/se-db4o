@@ -197,15 +197,6 @@ public class ObjectFieldFactoryBeanTests extends TestCase {
 		this.offb.afterPropertiesSet();
 	}
 
-	public void testQueryEvaluation() throws Exception {
-		Boolean value = Boolean.TRUE;
-		this.objectField.queryEvaluation(value.booleanValue());
-		this.objectFieldControl.replay();
-
-		this.offb.setQueryEvaluation(value);
-		this.offb.afterPropertiesSet();
-	}
-
 	public void testRenameValue() throws Exception {
 		String value = "renamed value";
 		this.objectField.rename(value);

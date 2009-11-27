@@ -30,7 +30,7 @@ import com.db4o.reflect.jdk.JdkReflector;
 
 /**
  * Db4o Template tests.
- * 
+ *
  * @author Costin Leau
  *
  */
@@ -348,18 +348,6 @@ public class Db4oTemplateTests extends TestCase {
 	}
 
 	/*
-	 * Test method for 'org.springextensions.db4o.Db4oTemplate.migrateFrom(ObjectContainer)'
-	 */
-	public void testMigrateFrom() {
-		MockControl objCtrl = MockControl.createControl(ObjectContainer.class);
-		ObjectContainer obj = (ObjectContainer) objCtrl.getMock();
-
-		container.migrateFrom(obj);
-		containerControl.replay();
-		template.migrateFrom(obj);
-	}
-
-	/*
 	 * Test method for 'org.springextensions.db4o.Db4oTemplate.peekPersisted(Object, int, boolean)'
 	 */
 	public void testPeekPersisted() {
@@ -401,7 +389,7 @@ public class Db4oTemplateTests extends TestCase {
 		MockControl refCtrl = MockClassControl.createControl(GenericReflector.class);
 		GenericReflector reflector = (GenericReflector) refCtrl.getMock();
 		refCtrl.replay();
-		
+
 		containerControl.expectAndReturn(container.reflector(), reflector);
 		containerControl.replay();
 		assertSame(reflector, template.reflector());
@@ -413,7 +401,7 @@ public class Db4oTemplateTests extends TestCase {
 	public void testRefresh() {
 		Object obj = new Object();
 		int depth = 1234;
-		
+
 		container.refresh(obj, depth);
 		containerControl.replay();
 		template.refresh(obj, depth);
@@ -424,7 +412,7 @@ public class Db4oTemplateTests extends TestCase {
 	 */
 	public void testReleaseSemaphore() {
 		String name = "";
-		
+
 		container.releaseSemaphore(name);
 		containerControl.replay();
 		template.releaseSemaphore(name);
@@ -449,7 +437,7 @@ public class Db4oTemplateTests extends TestCase {
 		boolean result = false;
 		String name = "";
 		int wait = 123;
-		
+
 		containerControl.expectAndReturn(container.setSemaphore(name, wait), result);
 		containerControl.replay();
 		assertFalse(template.setSemaphore(name, wait));
@@ -462,9 +450,9 @@ public class Db4oTemplateTests extends TestCase {
 	public void testStoredClass() {
 		MockControl classCtrl = MockControl.createControl(StoredClass.class);
 		StoredClass clazz = (StoredClass) classCtrl.getMock();
-		
+
 		Object obj = new Object();
-		 
+
 		containerControl.expectAndReturn(container.storedClass(obj), clazz);
 		containerControl.replay();
 		assertSame(clazz, template.storedClass(obj));
@@ -475,9 +463,9 @@ public class Db4oTemplateTests extends TestCase {
 	 */
 	public void testStoredClasses() {
 		StoredClass[] result = new StoredClass[] {};
-		
+
 		Object obj = new Object();
-		 
+
 		containerControl.expectAndReturn(container.storedClasses(), result);
 		containerControl.replay();
 		assertSame(result, template.storedClasses());
@@ -488,30 +476,10 @@ public class Db4oTemplateTests extends TestCase {
 	 */
 	public void testVersion() {
 		long result = 1234;
-		
+
 		containerControl.expectAndReturn(container.version(), result);
 		containerControl.replay();
 		assertEquals(result, template.version());
-	}
-
-	/*
-	 * Test method for 'org.springextensions.db4o.Db4oTemplate.switchToFile(String)'
-	 */
-	public void testSwitchToFile() {
-		String file = "";
-		
-		container.switchToFile(file);
-		containerControl.replay();
-		template.switchToFile(file);
-	}
-
-	/*
-	 * Test method for 'org.springextensions.db4o.Db4oTemplate.switchToMainFile()'
-	 */
-	public void testSwitchToMainFile() {
-		container.switchToMainFile();
-		containerControl.replay();	
-		template.switchToMainFile();
 	}
 
 	/*
@@ -547,8 +515,7 @@ public class Db4oTemplateTests extends TestCase {
 		try {
 			createTemplate().execute(new Db4oCallback() {
 				public Object doInDb4o(ObjectContainer container) {
-					ReflectClass refClass = new JdkClass(new JdkReflector(getClass().getClassLoader()),
-							this.getClass());
+					ReflectClass refClass = new JdkClass(container.ext().reflector(), new JdkReflector(getClass().getClassLoader()), this.getClass());
 					throw new ObjectNotStorableException(refClass);
 				}
 			});

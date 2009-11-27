@@ -243,7 +243,11 @@ public class Db4oTransactionManager extends AbstractPlatformTransactionManager i
 			return getObjectContainerHolder().isRollbackOnly();
 		}
 
-		/**
+        public void flush() {
+            // no-op
+        }
+
+        /**
 		 * Db4o executes everything in a transaction.
 		 * @return
 		 */

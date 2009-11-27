@@ -6,11 +6,11 @@
  */
 package org.springextensions.db4o;
 
-import java.io.IOException;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.util.Comparator;
 
 import org.springframework.dao.DataAccessException;
 
@@ -23,16 +23,18 @@ import com.db4o.ext.ExtClient;
 import com.db4o.ext.ExtObjectContainer;
 import com.db4o.ext.ObjectInfo;
 import com.db4o.ext.StoredClass;
+import com.db4o.io.Storage;
 import com.db4o.query.Predicate;
 import com.db4o.query.Query;
+import com.db4o.query.QueryComparator;
 import com.db4o.reflect.ReflectClass;
 import com.db4o.reflect.generic.GenericReflector;
 
 /**
  * Db4o template.
- * 
+ *
  * @author Costin Leau
- * 
+ *
  */
 public class Db4oTemplate extends Db4oAccessor implements Db4oOperations {
 
@@ -81,10 +83,11 @@ public class Db4oTemplate extends Db4oAccessor implements Db4oOperations {
 	//
 	// ObjectContainer interface methods
 	//
+
 	/**
 	 * @see org.springextensions.db4o.Db4oOperations#activate(java.lang.Object, int)
 	 */
-	public void activate(final java.lang.Object obj, final int depth) {
+	public void activate(final Object obj, final int depth) {
 		execute(new Db4oCallback() {
 			public Object doInDb4o(ObjectContainer container) throws RuntimeException {
 				container.activate(obj, depth);
@@ -96,7 +99,7 @@ public class Db4oTemplate extends Db4oAccessor implements Db4oOperations {
 	/**
 	 * @see org.springextensions.db4o.Db4oOperations#deactivate(java.lang.Object, int)
 	 */
-	public void deactivate(final java.lang.Object obj, final int depth) {
+	public void deactivate(final Object obj, final int depth) {
 		execute(new Db4oCallback() {
 			public Object doInDb4o(ObjectContainer container) throws RuntimeException {
 				container.deactivate(obj, depth);
@@ -108,7 +111,7 @@ public class Db4oTemplate extends Db4oAccessor implements Db4oOperations {
 	/**
 	 * @see org.springextensions.db4o.Db4oOperations#delete(java.lang.Object)
 	 */
-	public void delete(final java.lang.Object obj) {
+	public void delete(final Object obj) {
 		execute(new Db4oCallback() {
 			public Object doInDb4o(ObjectContainer container) throws RuntimeException {
 				container.delete(obj);
@@ -120,8 +123,8 @@ public class Db4oTemplate extends Db4oAccessor implements Db4oOperations {
 	/**
 	 * @see org.springextensions.db4o.Db4oOperations#queryByExample(java.lang.Object)
 	 */
-	public ObjectSet queryByExample(final java.lang.Object template) {
-		return (ObjectSet) execute(new Db4oCallback() {
+	public <T> ObjectSet<T> queryByExample(final Object template) {
+		return (ObjectSet<T>) execute(new Db4oCallback() {
 			public Object doInDb4o(ObjectContainer container) throws RuntimeException {
 				return container.queryByExample(template);
 			}
@@ -140,15 +143,48 @@ public class Db4oTemplate extends Db4oAccessor implements Db4oOperations {
 	}
 
 	/**
+	 * @see org.springextensions.db4o.Db4oOperations#query(java.lang.Class)
+	 */
+    public <TargetType> ObjectSet<TargetType> query(final Class<TargetType> clazz) {
+		return (ObjectSet<TargetType>) execute(new Db4oCallback() {
+			public Object doInDb4o(ObjectContainer container) throws RuntimeException {
+				return container.query(clazz);
+			}
+		}, true);
+    }
+
+	/**
 	 * @see org.springextensions.db4o.Db4oOperations#query(com.db4o.query.Predicate)
 	 */
-	public ObjectSet query(final Predicate predicate) {
-		return (ObjectSet) execute(new Db4oCallback() {
+	public <TargetType> ObjectSet<TargetType> query(final Predicate<TargetType> predicate) {
+		return (ObjectSet<TargetType>) execute(new Db4oCallback() {
 			public Object doInDb4o(ObjectContainer container) throws RuntimeException {
 				return container.query(predicate);
 			}
 		}, true);
 	}
+
+	/**
+	 * @see org.springextensions.db4o.Db4oOperations#query(com.db4o.query.Predicate, com.db4o.query.QueryComparator)
+	 */
+    public <TargetType> ObjectSet <TargetType> query(final Predicate<TargetType> predicate, final QueryComparator<TargetType> comparator) {
+		return (ObjectSet<TargetType>) execute(new Db4oCallback() {
+			public Object doInDb4o(ObjectContainer container) throws RuntimeException {
+				return container.query(predicate, comparator);
+			}
+		}, true);
+    }
+
+	/**
+	 * @see org.springextensions.db4o.Db4oOperations#query(com.db4o.query.Predicate, java.util.Comparator)
+	 */
+    public <TargetType> ObjectSet <TargetType> query(final Predicate<TargetType> predicate, final Comparator<TargetType> comparator) {
+		return (ObjectSet<TargetType>) execute(new Db4oCallback() {
+			public Object doInDb4o(ObjectContainer container) throws RuntimeException {
+				return container.query(predicate, comparator);
+			}
+		}, true);
+    }
 
 	/**
 	 * @see org.springextensions.db4o.Db4oOperations#store(java.lang.Object)
@@ -167,9 +203,33 @@ public class Db4oTemplate extends Db4oAccessor implements Db4oOperations {
 	//
 
 	/**
+	 * @see org.springextensions.db4o.Db4oOperations#activate(java.lang.Object)
+	 */
+	public void activate(final Object obj) {
+		execute(new Db4oCallback() {
+			public Object doInDb4o(ObjectContainer container) throws RuntimeException {
+				((ExtObjectContainer) container).activate(obj);
+				return null;
+			}
+		}, true);
+	}
+
+	/**
+	 * @see org.springextensions.db4o.Db4oOperations#deactivate(java.lang.Object)
+	 */
+	public void deactivate(final Object obj) {
+		execute(new Db4oCallback() {
+			public Object doInDb4o(ObjectContainer container) throws RuntimeException {
+				((ExtObjectContainer) container).deactivate(obj);
+				return null;
+			}
+		}, true);
+	}
+
+	/**
 	 * @see org.springextensions.db4o.Db4oOperations#backup(java.lang.String)
 	 */
-	public void backup(final java.lang.String path) {
+	public void backup(final String path) {
 		execute(new Db4oCallback() {
 			public Object doInDb4o(ObjectContainer container) throws RuntimeException {
 				// special hack
@@ -188,14 +248,37 @@ public class Db4oTemplate extends Db4oAccessor implements Db4oOperations {
 		}, true);
 	}
 
+    /**
+     * @see org.springextensions.db4o.Db4oOperations#backup(com.db4o.io.Storage, java.lang.String)
+     */
+    public void backup(final Storage targetStorage, final String path) {
+        execute(new Db4oCallback() {
+            public Object doInDb4o(ObjectContainer container) throws RuntimeException {
+                ((ExtObjectContainer) container).backup(targetStorage, path);
+                return null;
+            }
+        }, true);
+    }
+
 	/**
 	 * @see org.springextensions.db4o.Db4oOperations#bind(java.lang.Object, long)
 	 */
-	public void bind(final java.lang.Object obj, final long id) {
+	public void bind(final Object obj, final long id) {
 		execute(new Db4oCallback() {
 			public Object doInDb4o(ObjectContainer container) throws RuntimeException {
 				((ExtObjectContainer) container).bind(obj, id);
 				return null;
+			}
+		}, true);
+	}
+
+	/**
+	 * @see org.springextensions.db4o.Db4oOperations#descend(java.lang.Object, java.lang.String[])
+	 */
+	public Object descend(final Object obj, final String[] path) {
+		return execute(new Db4oCallback() {
+			public Object doInDb4o(ObjectContainer container) throws RuntimeException {
+				return ((ExtObjectContainer) container).descend(obj, path);
 			}
 		}, true);
 	}
@@ -225,7 +308,7 @@ public class Db4oTemplate extends Db4oAccessor implements Db4oOperations {
 	/**
 	 * @see org.springextensions.db4o.Db4oOperations#getID(java.lang.Object)
 	 */
-	public long getID(final java.lang.Object obj) {
+	public long getID(final Object obj) {
 		return ((Long) execute(new Db4oCallback() {
 			public Object doInDb4o(ObjectContainer container) throws RuntimeException {
 				return new Long(((ExtObjectContainer) container).getID(obj));
@@ -236,7 +319,7 @@ public class Db4oTemplate extends Db4oAccessor implements Db4oOperations {
 	/**
 	 * @see org.springextensions.db4o.Db4oOperations#getObjectInfo(java.lang.Object)
 	 */
-	public ObjectInfo getObjectInfo(final java.lang.Object obj) {
+	public ObjectInfo getObjectInfo(final Object obj) {
 		return (ObjectInfo) execute(new Db4oCallback() {
 			public Object doInDb4o(ObjectContainer container) throws RuntimeException {
 				return ((ExtObjectContainer) container).getObjectInfo(obj);
@@ -258,7 +341,7 @@ public class Db4oTemplate extends Db4oAccessor implements Db4oOperations {
 	/**
 	 * @see org.springextensions.db4o.Db4oOperations#isActive(java.lang.Object)
 	 */
-	public boolean isActive(final java.lang.Object obj) {
+	public boolean isActive(final Object obj) {
 		return ((Boolean) execute(new Db4oCallback() {
 			public Object doInDb4o(ObjectContainer container) throws RuntimeException {
 				return new Boolean(((ExtObjectContainer) container).isActive(obj));
@@ -291,7 +374,7 @@ public class Db4oTemplate extends Db4oAccessor implements Db4oOperations {
 	/**
 	 * @see org.springextensions.db4o.Db4oOperations#isStored(java.lang.Object)
 	 */
-	public boolean isStored(final java.lang.Object obj) {
+	public boolean isStored(final Object obj) {
 		return ((Boolean) execute(new Db4oCallback() {
 			public Object doInDb4o(ObjectContainer container) throws RuntimeException {
 				return new Boolean(((ExtObjectContainer) container).isStored(obj));
@@ -322,23 +405,10 @@ public class Db4oTemplate extends Db4oAccessor implements Db4oOperations {
 	}
 
 	/**
-	 * @see org.springextensions.db4o.Db4oOperations#migrateFrom(com.db4o.ObjectContainer)
+	 * @see org.springextensions.db4o.Db4oOperations#peekPersisted(java.lang.Object, int, boolean)
 	 */
-	public void migrateFrom(final ObjectContainer objectContainer) {
-		execute(new Db4oCallback() {
-			public Object doInDb4o(ObjectContainer container) throws RuntimeException {
-				((ExtObjectContainer) container).migrateFrom(objectContainer);
-				return null;
-			}
-		}, true);
-	}
-
-	/**
-	 * @see org.springextensions.db4o.Db4oOperations#peekPersisted(java.lang.Object, int,
-	 * boolean)
-	 */
-	public Object peekPersisted(final java.lang.Object object, final int depth, final boolean committed) {
-		return execute(new Db4oCallback() {
+	public <T> T peekPersisted(final T object, final int depth, final boolean committed) {
+		return (T) execute(new Db4oCallback() {
 			public Object doInDb4o(ObjectContainer container) throws RuntimeException {
 				return ((ExtObjectContainer) container).peekPersisted(object, depth, committed);
 			}
@@ -360,7 +430,7 @@ public class Db4oTemplate extends Db4oAccessor implements Db4oOperations {
 	/**
 	 * @see org.springextensions.db4o.Db4oOperations#purge(java.lang.Object)
 	 */
-	public void purge(final java.lang.Object obj) {
+	public void purge(final Object obj) {
 		execute(new Db4oCallback() {
 			public Object doInDb4o(ObjectContainer container) throws RuntimeException {
 				((ExtObjectContainer) container).purge(obj);
@@ -395,7 +465,7 @@ public class Db4oTemplate extends Db4oAccessor implements Db4oOperations {
 	/**
 	 * @see org.springextensions.db4o.Db4oOperations#releaseSemaphore(java.lang.String)
 	 */
-	public void releaseSemaphore(final java.lang.String name) {
+	public void releaseSemaphore(final String name) {
 		execute(new Db4oCallback() {
 			public Object doInDb4o(ObjectContainer container) throws RuntimeException {
 				((ExtObjectContainer) container).releaseSemaphore(name);
@@ -407,7 +477,7 @@ public class Db4oTemplate extends Db4oAccessor implements Db4oOperations {
 	/**
 	 * @see org.springextensions.db4o.Db4oOperations#store(java.lang.Object, int)
 	 */
-	public void store(final java.lang.Object obj, final int depth) {
+	public void store(final Object obj, final int depth) {
 		execute(new Db4oCallback() {
 			public Object doInDb4o(ObjectContainer container) throws RuntimeException {
 				((ExtObjectContainer) container).store(obj, depth);
@@ -419,7 +489,7 @@ public class Db4oTemplate extends Db4oAccessor implements Db4oOperations {
 	/**
 	 * @see org.springextensions.db4o.Db4oOperations#setSemaphore(java.lang.String, int)
 	 */
-	public boolean setSemaphore(final java.lang.String name, final int waitForAvailability) {
+	public boolean setSemaphore(final String name, final int waitForAvailability) {
 		return ((Boolean) execute(new Db4oCallback() {
 			public Object doInDb4o(ObjectContainer container) throws RuntimeException {
 				return new Boolean(((ExtObjectContainer) container).setSemaphore(name, waitForAvailability));
@@ -430,7 +500,7 @@ public class Db4oTemplate extends Db4oAccessor implements Db4oOperations {
 	/**
 	 * @see org.springextensions.db4o.Db4oOperations#storedClass(java.lang.Object)
 	 */
-	public StoredClass storedClass(final java.lang.Object clazz) {
+	public StoredClass storedClass(final Object clazz) {
 		return (StoredClass) execute(new Db4oCallback() {
 			public Object doInDb4o(ObjectContainer container) throws RuntimeException {
 				return ((ExtObjectContainer) container).storedClass(clazz);
@@ -465,35 +535,11 @@ public class Db4oTemplate extends Db4oAccessor implements Db4oOperations {
 	//
 
 	/**
-	 * @see org.springextensions.db4o.Db4oOperations#switchToFile(java.lang.String)
-	 */
-	public void switchToFile(final String fileName) {
-		execute(new Db4oCallback() {
-			public Object doInDb4o(ObjectContainer container) throws RuntimeException {
-				((ExtClient) container).switchToFile(fileName);
-				return null;
-			}
-		}, true);
-	}
-
-	/**
-	 * @see org.springextensions.db4o.Db4oOperations#switchToMainFile()
-	 */
-	public void switchToMainFile() {
-		execute(new Db4oCallback() {
-			public Object doInDb4o(ObjectContainer container) throws RuntimeException {
-				((ExtClient) container).switchToMainFile();
-				return null;
-			}
-		}, true);
-	}
-
-	/**
 	 * Create a close-suppressing proxy for the given object container.
-	 * 
+	 *
 	 * @param container the Db4o ObjectContainer to create a proxy for
 	 * @return the ObjectContainer proxy
-	 * 
+	 *
 	 * @see com.db4o.ObjectContainer#close()
 	 */
 	protected ObjectContainer createContainerProxy(ObjectContainer container) {
@@ -511,7 +557,7 @@ public class Db4oTemplate extends Db4oAccessor implements Db4oOperations {
 
 	/**
 	 * Invocation handler that suppresses close calls on Object Container.
-	 * 
+	 *
 	 * @see com.db4o.ObjectContainer#close()
 	 */
 	private class CloseSuppressingInvocationHandler implements InvocationHandler {
