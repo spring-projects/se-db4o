@@ -28,16 +28,16 @@ import com.db4o.config.Configuration;
  * FactoryBean for creating {@link ObjectServer}s. This class adds support for
  * configuring user access through the userAccess property which takes a
  * Properties object with key the user name and value the password.
- * 
+ *
  * <p/> Accepts a {@link Configuration} object for local configurations. If none
  * is given, the global db4o configuration will be used.
- * 
- * 
+ *
+ *
  * @see com.db4o.Db4o
  * @author Costin Leau
- * 
+ *
  */
-public class ObjectServerFactoryBean implements InitializingBean, DisposableBean, FactoryBean {
+public class ObjectServerFactoryBean implements FactoryBean<ObjectServer>, InitializingBean, DisposableBean {
 
 	private static final Log log = LogFactory.getLog(ObjectServerFactoryBean.class);
 
@@ -54,14 +54,14 @@ public class ObjectServerFactoryBean implements InitializingBean, DisposableBean
 	/**
 	 * @see org.springframework.beans.factory.FactoryBean#getObject()
 	 */
-	public Object getObject() throws Exception {
+	public ObjectServer getObject() throws Exception {
 		return server;
 	}
 
 	/**
 	 * @see org.springframework.beans.factory.FactoryBean#getObjectType()
 	 */
-	public Class getObjectType() {
+	public Class<? extends ObjectServer> getObjectType() {
 		return (server != null ? server.getClass() : ObjectServer.class);
 	}
 
@@ -82,12 +82,12 @@ public class ObjectServerFactoryBean implements InitializingBean, DisposableBean
 			throw new IllegalArgumentException("port must be greater then or equal to 0");
 
 		log.info("Database file is " + databaseFile.getFile().getAbsolutePath());
-		
+
 		// initialize the configuration to use only one method variant
 		if (configuration == null)
 			configuration = Db4o.configure();
 		server = Db4o.openServer(configuration, databaseFile.getFile().getAbsolutePath(), port);
-		
+
 		log.info(Db4o.version());
 		log.info("opened db4o server @" + ObjectUtils.getIdentityHexString(server));
 
@@ -172,7 +172,7 @@ public class ObjectServerFactoryBean implements InitializingBean, DisposableBean
 	/**
 	 * Set the configuration object to be used when creating the server. If none
 	 * is specified, the global db4o configuration is used.
-	 * 
+	 *
 	 * @param configuration The configuration to set.
 	 */
 	public void setConfiguration(Configuration configuration) {
