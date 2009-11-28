@@ -19,19 +19,19 @@ import com.db4o.ext.OldFormatException;
 /**
  * Utils class for ObjectServers. Handles exception translation at the moment.
  * @author Costin Leau
- * 
+ *
  */
 public class ObjectServerUtils {
 
 	/**
 	 * db4o exception translator - it converts specific db4o unchecked/checked
 	 * exceptions into unchecked Spring DA exception.
-	 * 
+	 *
 	 * As there is no db4o specific base exception, the Db4oSystemException is
 	 * used as a marker inside the package for a user specific runtime exception
 	 * inside the callbacks for example.
-	 * 
-	 * 
+	 *
+	 *
 	 * @param ex
 	 * @return
 	 */
@@ -51,4 +51,18 @@ public class ObjectServerUtils {
 		// fallback
 		return new Db4oSystemException(ex);
 	}
+
+	/**
+	 * utility method used for masking the password with '*'.
+	 * @param string
+	 * @return
+	 */
+	public static String maskString(String string) {
+		StringBuffer buf = new StringBuffer(string.length());
+		for (int i = 0; i < string.length(); i++) {
+			buf.append('*');
+		}
+		return buf.toString();
+	}
+
 }

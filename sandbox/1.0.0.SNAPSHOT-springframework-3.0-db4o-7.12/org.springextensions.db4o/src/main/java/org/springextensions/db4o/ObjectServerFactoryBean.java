@@ -98,22 +98,9 @@ public class ObjectServerFactoryBean implements FactoryBean<ObjectServer>, Initi
 				server.grantAccess((String) entry.getKey(), (String) entry.getValue());
 				if (debug)
 					log.debug("grated access to user `" + entry.getKey() + "` with password `"
-							+ maskString(((String) entry.getValue())) + "`");
+							+ ObjectServerUtils.maskString(((String) entry.getValue())) + "`");
 			}
 		}
-	}
-
-	/**
-	 * Utility class used for masking the password with '*'.
-	 * @param string
-	 * @return
-	 */
-	private String maskString(String string) {
-		StringBuffer buf = new StringBuffer(string.length());
-		for (int i = 0; i < string.length(); i++) {
-			buf.append('*');
-		}
-		return buf.toString();
 	}
 
 	/**
