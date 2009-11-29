@@ -1,3 +1,18 @@
+/*
+ * Copyright 2005-2009 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.springextensions.db4o;
 
 import org.springframework.beans.factory.InitializingBean;
@@ -15,24 +30,24 @@ import com.db4o.ObjectContainer;
 
 /**
  * PlatformTransactionManager implementation for db4o.
- * 
+ *
  * <p>
  * This local strategy is an alternative to executing db4o operations within JTA
  * transactions. Its advantage is the ability to work in any environment,
  * for example a standalone application or a test suite. It is <i>not</i> able
  * to provide XA transactions, for example to share transactions with data
  * access.
- * 
+ *
  * <p>
  * This transaction strategy will typically be used in combination with a single
  * db4o database for all db4o access to save resources, typically in a
- * standalone application. 
+ * standalone application.
  *
- * 
+ *
  * @see org.springframework.transaction.support.AbstractPlatformTransactionManager
- * 
+ *
  * @author Costin Leau
- * 
+ *
  */
 public class Db4oTransactionManager extends AbstractPlatformTransactionManager implements InitializingBean {
 
@@ -40,14 +55,14 @@ public class Db4oTransactionManager extends AbstractPlatformTransactionManager i
 
 	/**
 	 * Create a new Db4oTransactionManager instance.
-	 * 
+	 *
 	 */
 	public Db4oTransactionManager() {
 	}
 
 	/**
 	 * Create a new Db4oTransactionManager instance.
-	 * 
+	 *
 	 * @param container
 	 *            container to manage transactions for
 	 */
@@ -99,7 +114,7 @@ public class Db4oTransactionManager extends AbstractPlatformTransactionManager i
 
 			/*
 			 * We have no notion of flushing inside a db4o object container
-			 * 
+			 *
 			 if (transactionDefinition.isReadOnly() && txObject.isNewObjectContainerHolder()) {
 			 containerHolder.setReadOnly(true);
 			 }
@@ -219,9 +234,9 @@ public class Db4oTransactionManager extends AbstractPlatformTransactionManager i
 
 	/**
 	 * Internal transaction object.
-	 * 
+	 *
 	 * @see org.springframework.transaction.support.SmartTransactionObject
-	 * 
+	 *
 	 */
 	private static class Db4oTransactionObject implements SmartTransactionObject {
 

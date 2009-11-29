@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2005 the original author or authors.
+ * Copyright 2005-2009 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,28 +28,28 @@ import com.db4o.config.ObjectTranslator;
 /**
  * {@link org.springframework.beans.factory.FactoryBean} used for constructing
  * db4o {@link com.db4o.config.ObjectClass}.
- * 
+ *
  * <p>
  * By default, this <code>FactoryBean</code> will return new instances of
  * <code>ObjectClass</code> (i.e. this <code>FactoryBean</code> isn't a
  * {@link #isSingleton() singleton}).
  * </p>
- * 
+ *
  * <p>
  * This class is needed as db4o configuration doesn't respect JavaBeans
  * conventions and thus Spring can't inject the properties.
  * </p>
- * 
+ *
  * <p>
  * If an explicit {@link com.db4o.config.Configuration} is
  * {@link #setConfiguration provided} then that will be used, otherwise a
  * {@link com.db4o.Db4o#configure() default configuration} will be used.
  * </p>
- * 
+ *
  * @see org.springextensions.db4o.ConfigurationFactoryBean
- * 
+ *
  * @since 0.9
- * 
+ *
  */
 public class ObjectClassFactoryBean implements InitializingBean, FactoryBean {
 
@@ -89,7 +89,7 @@ public class ObjectClassFactoryBean implements InitializingBean, FactoryBean {
 
 	/**
 	 * {@inheritDoc}
-	 * 
+	 *
 	 * Create the {@link #objectClass}.
 	 */
 	public void afterPropertiesSet() throws Exception {
@@ -108,7 +108,7 @@ public class ObjectClassFactoryBean implements InitializingBean, FactoryBean {
 
 	/**
 	 * Determine the {@link com.db4o.config.Configuration} to use.
-	 * 
+	 *
 	 * <p>
 	 * If the {@link #configuration} is explicitly set, that will be used,
 	 * otherwise a {@link Db4o#configure() default configuration} will be used.
@@ -192,7 +192,7 @@ public class ObjectClassFactoryBean implements InitializingBean, FactoryBean {
 
 	/**
 	 * {@inheritDoc}
-	 * 
+	 *
 	 * <p>
 	 * This is set to <code>false</code> as multiple instances of an
 	 * {@link com.db4o.config.ObjectClass} with the same configuration are
@@ -205,7 +205,7 @@ public class ObjectClassFactoryBean implements InitializingBean, FactoryBean {
 	/**
 	 * Set the {@link Class class} for which this factory should construct an
 	 * {@link com.db4o.config.ObjectClass}.
-	 * 
+	 *
 	 * @param clazz
 	 *            the clazz. May not be <code>null</code>.
 	 */
@@ -217,11 +217,11 @@ public class ObjectClassFactoryBean implements InitializingBean, FactoryBean {
 	 * Set the {@link com.db4o.config.Configuration configuration} to be used to
 	 * {@link com.db4o.config.Configuration#objectClass(Object) construct} the
 	 * {@link com.db4o.config.ObjectClass}.
-	 * 
+	 *
 	 * <p>
 	 * If this is never explicitly called, the
 	 * {@link com.db4o.Db4o#configure() default configuration} will be used.
-	 * 
+	 *
 	 * @param configuration
 	 *            the <code>configuration</code> to use.
 	 */

@@ -1,3 +1,18 @@
+/*
+ * Copyright 2005-2009 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.springextensions.db4o.support;
 
 import org.springextensions.db4o.Db4oTemplate;
@@ -8,18 +23,18 @@ import com.db4o.ObjectContainer;
 
 /**
  * Convenient super class for Db4o data access objects.
- * 
+ *
  * <p>
  * Requires a ObjectContainer to be set, providing a Db4oTemplate based on it to
  * subclasses. Can alternatively be initialized directly via a Db4oTemplate.
- * 
+ *
  * <p>
  * This class will create its own Db4oTemplate if only a ObjectContainer is
  * passed in.
- * 
+ *
  * @author Daniel Mitterdorfer
  * @author Costin Leau
- * 
+ *
  */
 public abstract class Db4oDaoSupport extends DaoSupport {
 	private Db4oTemplate template;
@@ -27,7 +42,7 @@ public abstract class Db4oDaoSupport extends DaoSupport {
 	/**
 	 * Set the Db4o ObjectContainer to be used by this DAO. Will automatically
 	 * create a Db4oTemplate for the given ObjectContainer.
-	 * 
+	 *
 	 * @see #createDb4oTemplate
 	 * @see #setDb4oTemplate
 	 */
@@ -41,7 +56,7 @@ public abstract class Db4oDaoSupport extends DaoSupport {
 	 * <p>
 	 * Can be overridden in subclasses to provide a Db4oTemplate instance with
 	 * different configuration, or a custom Db4oTemplate subclass.
-	 * 
+	 *
 	 * @param container the Db4o ObjectContainer to create a Db4oTemplate for
 	 * @return the new Db4oTemplate instance
 	 * @see #setObjectContainer
@@ -63,7 +78,7 @@ public abstract class Db4oDaoSupport extends DaoSupport {
 	/**
 	 * Set the Db4oTemplate for this DAO explicitly, as an alternative to
 	 * specifying an ObjectContainer.
-	 * 
+	 *
 	 * @see #setObjectContainer
 	 */
 
@@ -84,7 +99,7 @@ public abstract class Db4oDaoSupport extends DaoSupport {
 
 	/**
 	 * Convert the given db4o exception into a Spring unchecked DAO exception.
-	 * 
+	 *
 	 * @param ex
 	 * @return
 	 */

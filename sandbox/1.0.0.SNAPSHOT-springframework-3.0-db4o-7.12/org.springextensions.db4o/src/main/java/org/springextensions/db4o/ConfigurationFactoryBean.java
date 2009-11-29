@@ -1,8 +1,17 @@
-/**
- * Created on Nov 5, 2005
+/*
+ * Copyright 2005-2009 the original author or authors.
  *
- * $Id$
- * $Revision$
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.springextensions.db4o;
 
@@ -23,18 +32,18 @@ import com.db4o.reflect.Reflector;
 /**
  * Factory Bean used for settings db4o {@link com.db4o.config.Configuration}
  * object.
- * 
+ *
  * <p/> By default, this class will use a 'fresh' configuration. However, it's
  * possible to use this FactoryBean to modify the global Configuration object for the
  * running JVM session or clone the existing one. It is also possible to pass a
  * Configuration object directly to this FactoryBean, which bypasses the
  * creation process.
- * 
+ *
  * This class is needed as db4o configuration object doesn't respect JavaBeans
  * conventions and thus Spring can't inject the properties.
- * 
+ *
  * @author Costin Leau
- * 
+ *
  */
 public class ConfigurationFactoryBean implements InitializingBean, FactoryBean {
 
@@ -238,9 +247,9 @@ public class ConfigurationFactoryBean implements InitializingBean, FactoryBean {
 
 	/**
 	 * Creates a db4o configuration based on the configuration mode.
-	 * 
+	 *
 	 * @param configuration mode
-	 * 
+	 *
 	 * @return a db4o configuration object
 	 */
 	protected Configuration createConfiguration(int creationMode) {
@@ -313,7 +322,7 @@ public class ConfigurationFactoryBean implements InitializingBean, FactoryBean {
 
 	/**
 	 * Set the db4o configuration to use for this FactoryBean.
-	 * 
+	 *
 	 * @param configuration The configuration to set.
 	 */
 	public void setConfiguration(Configuration configuration) {
@@ -493,12 +502,12 @@ public class ConfigurationFactoryBean implements InitializingBean, FactoryBean {
 	 * Set the configuration creation mode. This factoryBean can work on a newly
 	 * created configuration, a JVM cloned one or directly on the global JVM
 	 * configuration.
-	 * 
+	 *
 	 * @see #CONFIGURATION_NEW
 	 * @see #CONFIGURATION_CLONED
 	 * @see #CONFIGURATION_GLOBAL
 	 * @see #setConfigurationCreationModeNumber(int)
-	 * 
+	 *
 	 * @param mode the configuration mode as a string
 	 */
 	public void setConfigurationCreationMode(String mode) {
@@ -513,7 +522,7 @@ public class ConfigurationFactoryBean implements InitializingBean, FactoryBean {
 
 	/**
 	 * Set the configuration creation mode.
-	 * 
+	 *
 	 * @param mode the configuration mode as an int
 	 */
 	public void setConfigurationCreationModeNumber(int mode) {
