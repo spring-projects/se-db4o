@@ -173,7 +173,7 @@ public class ObjectFieldFactoryBeanTest {
     @Test
     public void testCascadeOnActivate() throws Exception {
         Boolean value = Boolean.TRUE;
-        this.objectField.cascadeOnActivate(value.booleanValue());
+        this.objectField.cascadeOnActivate(value);
         this.objectFieldControl.replay();
 
         this.offb.setCascadeOnActivate(value);
@@ -183,7 +183,7 @@ public class ObjectFieldFactoryBeanTest {
     @Test
     public void testCascadeOnDelete() throws Exception {
         Boolean value = Boolean.TRUE;
-        this.objectField.cascadeOnDelete(value.booleanValue());
+        this.objectField.cascadeOnDelete(value);
         this.objectFieldControl.replay();
 
         this.offb.setCascadeOnDelete(value);
@@ -193,7 +193,7 @@ public class ObjectFieldFactoryBeanTest {
     @Test
     public void testCascadeOnUpdate() throws Exception {
         Boolean value = Boolean.TRUE;
-        this.objectField.cascadeOnUpdate(value.booleanValue());
+        this.objectField.cascadeOnUpdate(value);
         this.objectFieldControl.replay();
 
         this.offb.setCascadeOnUpdate(value);
@@ -204,7 +204,7 @@ public class ObjectFieldFactoryBeanTest {
     @Test
     public void testIndexed() throws Exception {
         Boolean value = Boolean.TRUE;
-        this.objectField.indexed(value.booleanValue());
+        this.objectField.indexed(value);
         this.objectFieldControl.replay();
 
         this.offb.setIndexed(value);

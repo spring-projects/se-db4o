@@ -125,52 +125,43 @@ public class ObjectClassFactoryBean implements InitializingBean, FactoryBean {
 	private void createObjectClass() {
 		this.objectClass = this.configuration.objectClass(this.clazz);
 		if (this.callConstructor != null) {
-			this.objectClass.callConstructor(this.callConstructor
-					.booleanValue());
+			this.objectClass.callConstructor(this.callConstructor);
 		}
 		if (this.cascadeOnActivate != null) {
-			this.objectClass.cascadeOnActivate(this.cascadeOnActivate
-					.booleanValue());
+			this.objectClass.cascadeOnActivate(this.cascadeOnActivate);
 		}
 		if (this.cascadeOnDelete != null) {
-			this.objectClass.cascadeOnDelete(this.cascadeOnDelete
-					.booleanValue());
+			this.objectClass.cascadeOnDelete(this.cascadeOnDelete);
 		}
 		if (this.cascadeOnUpdate != null) {
-			this.objectClass.cascadeOnUpdate(this.cascadeOnUpdate
-					.booleanValue());
+			this.objectClass.cascadeOnUpdate(this.cascadeOnUpdate);
 		}
 		if (this.enableReplication != null) {
-			this.objectClass.enableReplication(this.enableReplication
-					.booleanValue());
+			this.objectClass.enableReplication(this.enableReplication);
 		}
 		if (this.generateUUIDs != null) {
-			this.objectClass.generateUUIDs(this.generateUUIDs.booleanValue());
+			this.objectClass.generateUUIDs(this.generateUUIDs);
 		}
 		if (this.generateVersionNumbers != null) {
-			this.objectClass.generateVersionNumbers(this.generateVersionNumbers
-					.booleanValue());
+			this.objectClass.generateVersionNumbers(this.generateVersionNumbers);
 		}
 		if (this.indexed != null) {
-			this.objectClass.indexed(this.indexed.booleanValue());
+			this.objectClass.indexed(this.indexed);
 		}
 		if (this.maximumActivationDepth != null) {
-			this.objectClass.maximumActivationDepth(this.maximumActivationDepth
-					.intValue());
+			this.objectClass.maximumActivationDepth(this.maximumActivationDepth);
 		}
 		if (this.minimumActivationDepth != null) {
-			this.objectClass.minimumActivationDepth(this.minimumActivationDepth
-					.intValue());
+			this.objectClass.minimumActivationDepth(this.minimumActivationDepth);
 		}
 		if (Boolean.TRUE.equals(this.persistStaticFieldValues)) {
 			this.objectClass.persistStaticFieldValues();
 		}
 		if (this.storeTransientFields != null) {
-			this.objectClass.storeTransientFields(this.storeTransientFields
-					.booleanValue());
+			this.objectClass.storeTransientFields(this.storeTransientFields);
 		}
 		if (this.updateDepth != null) {
-			this.objectClass.updateDepth(this.updateDepth.intValue());
+			this.objectClass.updateDepth(this.updateDepth);
 		}
 
 		// post process the objectClass

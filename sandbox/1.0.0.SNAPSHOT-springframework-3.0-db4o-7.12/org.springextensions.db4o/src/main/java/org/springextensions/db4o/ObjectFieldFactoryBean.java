@@ -104,16 +104,16 @@ public class ObjectFieldFactoryBean implements InitializingBean, FactoryBean {
 		this.objectField = this.objectClass.objectField(this.fieldName);
 
 		if (this.cascadeOnActivate != null) {
-			this.objectField.cascadeOnActivate(this.cascadeOnActivate.booleanValue());
+			this.objectField.cascadeOnActivate(this.cascadeOnActivate);
 		}
 		if (this.cascadeOnDelete != null) {
-			this.objectField.cascadeOnDelete(this.cascadeOnDelete.booleanValue());
+			this.objectField.cascadeOnDelete(this.cascadeOnDelete);
 		}
 		if (this.cascadeOnUpdate != null) {
-			this.objectField.cascadeOnUpdate(this.cascadeOnUpdate.booleanValue());
+			this.objectField.cascadeOnUpdate(this.cascadeOnUpdate);
 		}
 		if (this.indexed != null) {
-			this.objectField.indexed(this.indexed.booleanValue());
+			this.objectField.indexed(this.indexed);
 		}
 
 		// post process the ObjectField

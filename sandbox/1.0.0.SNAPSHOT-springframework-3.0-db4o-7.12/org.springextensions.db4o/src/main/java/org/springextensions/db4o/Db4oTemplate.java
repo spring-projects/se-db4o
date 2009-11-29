@@ -318,11 +318,11 @@ public class Db4oTemplate extends Db4oAccessor implements Db4oOperations {
 	 * @see org.springextensions.db4o.Db4oOperations#getID(java.lang.Object)
 	 */
 	public long getID(final Object obj) {
-		return ((Long) execute(new Db4oCallback() {
+		return (Long) execute(new Db4oCallback() {
 			public Object doInDb4o(ObjectContainer container) throws RuntimeException {
-				return new Long(((ExtObjectContainer) container).getID(obj));
+				return ((ExtObjectContainer) container).getID(obj);
 			}
-		}, true)).longValue();
+		}, true);
 	}
 
 	/**
@@ -351,44 +351,44 @@ public class Db4oTemplate extends Db4oAccessor implements Db4oOperations {
 	 * @see org.springextensions.db4o.Db4oOperations#isActive(java.lang.Object)
 	 */
 	public boolean isActive(final Object obj) {
-		return ((Boolean) execute(new Db4oCallback() {
+		return (Boolean) execute(new Db4oCallback() {
 			public Object doInDb4o(ObjectContainer container) throws RuntimeException {
-				return new Boolean(((ExtObjectContainer) container).isActive(obj));
+				return ((ExtObjectContainer) container).isActive(obj);
 			}
-		}, true)).booleanValue();
+		}, true);
 	}
 
 	/**
 	 * @see org.springextensions.db4o.Db4oOperations#isCached(long)
 	 */
 	public boolean isCached(final long ID) {
-		return ((Boolean) execute(new Db4oCallback() {
+		return (Boolean) execute(new Db4oCallback() {
 			public Object doInDb4o(ObjectContainer container) throws RuntimeException {
-				return new Boolean(((ExtObjectContainer) container).isCached(ID));
+				return ((ExtObjectContainer) container).isCached(ID);
 			}
-		}, true)).booleanValue();
+		}, true);
 	}
 
 	/**
 	 * @see org.springextensions.db4o.Db4oOperations#isClosed()
 	 */
 	public boolean isClosed() {
-		return ((Boolean) execute(new Db4oCallback() {
+		return (Boolean) execute(new Db4oCallback() {
 			public Object doInDb4o(ObjectContainer container) throws RuntimeException {
-				return new Boolean(((ExtObjectContainer) container).isClosed());
+				return ((ExtObjectContainer) container).isClosed();
 			}
-		}, true)).booleanValue();
+		}, true);
 	}
 
 	/**
 	 * @see org.springextensions.db4o.Db4oOperations#isStored(java.lang.Object)
 	 */
 	public boolean isStored(final Object obj) {
-		return ((Boolean) execute(new Db4oCallback() {
+		return (Boolean) execute(new Db4oCallback() {
 			public Object doInDb4o(ObjectContainer container) throws RuntimeException {
-				return new Boolean(((ExtObjectContainer) container).isStored(obj));
+				return ((ExtObjectContainer) container).isStored(obj);
 			}
-		}, true)).booleanValue();
+		}, true);
 	}
 
 	/**
@@ -499,11 +499,11 @@ public class Db4oTemplate extends Db4oAccessor implements Db4oOperations {
 	 * @see org.springextensions.db4o.Db4oOperations#setSemaphore(java.lang.String, int)
 	 */
 	public boolean setSemaphore(final String name, final int waitForAvailability) {
-		return ((Boolean) execute(new Db4oCallback() {
+		return (Boolean) execute(new Db4oCallback() {
 			public Object doInDb4o(ObjectContainer container) throws RuntimeException {
-				return new Boolean(((ExtObjectContainer) container).setSemaphore(name, waitForAvailability));
+				return ((ExtObjectContainer) container).setSemaphore(name, waitForAvailability);
 			}
-		}, true)).booleanValue();
+		}, true);
 	}
 
 	/**
@@ -532,11 +532,11 @@ public class Db4oTemplate extends Db4oAccessor implements Db4oOperations {
 	 * @see org.springextensions.db4o.Db4oOperations#version()
 	 */
 	public long version() {
-		return ((Long) execute(new Db4oCallback() {
+		return (Long) execute(new Db4oCallback() {
 			public Object doInDb4o(ObjectContainer container) throws RuntimeException {
-				return new Long(((ExtObjectContainer) container).version());
+				return ((ExtObjectContainer) container).version();
 			}
-		}, true)).longValue();
+		}, true);
 	}
 
 	//
@@ -587,7 +587,7 @@ public class Db4oTemplate extends Db4oAccessor implements Db4oOperations {
 			}
 			else if (method.getName().equals("hashCode")) {
 				// Use hashCode of session proxy.
-				return new Integer(hashCode());
+				return hashCode();
 			}
 			else if (method.getName().equals("close")) {
 

@@ -178,7 +178,7 @@ public class ObjectClassFactoryBeanTest {
     @Test
     public void testCallConstructor() throws Exception {
         Boolean value = Boolean.TRUE;
-        this.objectClass.callConstructor(value.booleanValue());
+        this.objectClass.callConstructor(value);
         this.objectClassControl.replay();
 
         this.ocfb.setCallConstructor(value);
@@ -188,7 +188,7 @@ public class ObjectClassFactoryBeanTest {
     @Test
     public void testCascadeOnActivate() throws Exception {
         Boolean value = Boolean.TRUE;
-        this.objectClass.cascadeOnActivate(value.booleanValue());
+        this.objectClass.cascadeOnActivate(value);
         this.objectClassControl.replay();
 
         this.ocfb.setCascadeOnActivate(value);
@@ -198,7 +198,7 @@ public class ObjectClassFactoryBeanTest {
     @Test
     public void testCascadeOnDelete() throws Exception {
         Boolean value = Boolean.TRUE;
-        this.objectClass.cascadeOnDelete(value.booleanValue());
+        this.objectClass.cascadeOnDelete(value);
         this.objectClassControl.replay();
 
         this.ocfb.setCascadeOnDelete(value);
@@ -208,7 +208,7 @@ public class ObjectClassFactoryBeanTest {
     @Test
     public void testCascadeOnUpdate() throws Exception {
         Boolean value = Boolean.TRUE;
-        this.objectClass.cascadeOnUpdate(value.booleanValue());
+        this.objectClass.cascadeOnUpdate(value);
         this.objectClassControl.replay();
 
         this.ocfb.setCascadeOnUpdate(value);
@@ -218,7 +218,7 @@ public class ObjectClassFactoryBeanTest {
     @Test
     public void testEnableReplication() throws Exception {
         Boolean value = Boolean.TRUE;
-        this.objectClass.enableReplication(value.booleanValue());
+        this.objectClass.enableReplication(value);
         this.objectClassControl.replay();
 
         this.ocfb.setEnableReplication(value);
@@ -228,7 +228,7 @@ public class ObjectClassFactoryBeanTest {
     @Test
     public void testGenerateUUIDs() throws Exception {
         Boolean value = Boolean.TRUE;
-        this.objectClass.generateUUIDs(value.booleanValue());
+        this.objectClass.generateUUIDs(value);
         this.objectClassControl.replay();
 
         this.ocfb.setGenerateUUIDs(value);
@@ -238,7 +238,7 @@ public class ObjectClassFactoryBeanTest {
     @Test
     public void testGenerateVersionNumbers() throws Exception {
         Boolean value = Boolean.TRUE;
-        this.objectClass.generateVersionNumbers(value.booleanValue());
+        this.objectClass.generateVersionNumbers(value);
         this.objectClassControl.replay();
 
         this.ocfb.setGenerateVersionNumbers(value);
@@ -248,7 +248,7 @@ public class ObjectClassFactoryBeanTest {
     @Test
     public void testIndexed() throws Exception {
         Boolean value = Boolean.TRUE;
-        this.objectClass.indexed(value.booleanValue());
+        this.objectClass.indexed(value);
         this.objectClassControl.replay();
 
         this.ocfb.setIndexed(value);
@@ -257,8 +257,8 @@ public class ObjectClassFactoryBeanTest {
 
     @Test
     public void testMaximumActivationDepth() throws Exception {
-        Integer value = Integer.valueOf(10);
-        this.objectClass.maximumActivationDepth(value.intValue());
+        Integer value = 10;
+        this.objectClass.maximumActivationDepth(value);
         this.objectClassControl.replay();
 
         this.ocfb.setMaximumActivationDepth(value);
@@ -267,8 +267,8 @@ public class ObjectClassFactoryBeanTest {
 
     @Test
     public void testMinimumActivationDepth() throws Exception {
-        Integer value = Integer.valueOf(10);
-        this.objectClass.minimumActivationDepth(value.intValue());
+        Integer value = 10;
+        this.objectClass.minimumActivationDepth(value);
         this.objectClassControl.replay();
 
         this.ocfb.setMinimumActivationDepth(value);
@@ -297,7 +297,7 @@ public class ObjectClassFactoryBeanTest {
     @Test
     public void testStoreTransientFields() throws Exception {
         Boolean value = Boolean.TRUE;
-        this.objectClass.storeTransientFields(value.booleanValue());
+        this.objectClass.storeTransientFields(value);
         this.objectClassControl.replay();
 
         this.ocfb.setStoreTransientFields(value);
@@ -318,8 +318,8 @@ public class ObjectClassFactoryBeanTest {
 
     @Test
     public void testUpdateDepth() throws Exception {
-        Integer value = Integer.valueOf(10);
-        this.objectClass.updateDepth(value.intValue());
+        Integer value = 10;
+        this.objectClass.updateDepth(value);
         this.objectClassControl.replay();
 
         this.ocfb.setUpdateDepth(value);

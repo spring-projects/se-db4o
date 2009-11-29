@@ -181,7 +181,7 @@ public class ConfigurationFactoryBeanTest {
     }
 
     private void assertConfigMode(int mode) throws Exception {
-        assertFieldValue("configurationCreationMode", cfb, new Integer(mode));
+        assertFieldValue("configurationCreationMode", cfb, mode);
     }
 
 }

@@ -205,7 +205,7 @@ public class Db4oTemplateTest {
       */
     @Test
     public void testBackup() throws IOException {
-        String backup = new String();
+        String backup = "";
         container.backup(backup);
         containerControl.replay();
 
