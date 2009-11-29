@@ -15,195 +15,210 @@
  */
 package org.springextensions.db4o;
 
-import junit.framework.TestCase;
-
-import org.easymock.MockControl;
-import org.springextensions.db4o.ObjectFieldFactoryBean;
-
 import com.db4o.config.ObjectClass;
 import com.db4o.config.ObjectField;
+import org.easymock.MockControl;
+import org.testng.AssertJUnit;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
 /**
- * Unit tests to ensure the {@link #ObjectFieldFactoryBean()} works correctly.
- *
+ * Unit tests to ensure the {@link org.springextensions.db4o.ObjectFieldFactoryBean} works correctly.
+ * <p/>
  * Only way to verify that the explicit config is used is by verifying
  * the relevant methods on ObjectField are called.
  *
  * @since 0.9
  */
-public class ObjectFieldFactoryBeanTests extends TestCase {
+public class ObjectFieldFactoryBeanTests {
 
-	private MockControl objectClassControl;
-	private ObjectClass objectClass;
+    private MockControl objectClassControl;
 
-	private MockControl objectFieldControl;
-	private ObjectField objectField;
+    private ObjectClass objectClass;
 
-	private ObjectFieldFactoryBean offb;
+    private MockControl objectFieldControl;
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * Set up an {@link #objectClassControl} and {@link #objectFieldControl} and
-	 * associated proxies.
-	 *
-	 * By Default, the constructed {@link #offb} will use the
-	 * {@link #objectClass} which will return the {@link #objectField}.
-	 *
-	 * If test methods do not utilise these controls, they must explicitly set
-	 * them to be <code>null</code> otherwise {@link #tearDown()} will throw
-	 * an exception.
-	 */
-	public void setUp() throws Exception {
-		this.objectClassControl = MockControl.createNiceControl(ObjectClass.class);
-		this.objectClass = (ObjectClass) objectClassControl.getMock();
-		this.objectFieldControl = MockControl.createNiceControl(ObjectField.class);
-		this.objectField = (ObjectField) objectFieldControl.getMock();
+    private ObjectField objectField;
 
-		String fieldName = "fieldName";
-		this.objectClass.objectField(fieldName);
-		this.objectClassControl.expectAndReturn(null, this.objectField);
-		this.objectClassControl.replay();
+    private ObjectFieldFactoryBean offb;
 
-		this.offb = new ObjectFieldFactoryBean();
-		this.offb.setObjectClass(this.objectClass);
-		this.offb.setFieldName(fieldName);
-	}
+    /**
+     * {@inheritDoc}
+     * <p/>
+     * Set up an {@link #objectClassControl} and {@link #objectFieldControl} and
+     * associated proxies.
+     * <p/>
+     * By Default, the constructed {@link #offb} will use the
+     * {@link #objectClass} which will return the {@link #objectField}.
+     * <p/>
+     * If test methods do not utilise these controls, they must explicitly set
+     * them to be <code>null</code> otherwise {@link #tearDown()} will throw
+     * an exception.
+     */
+    @BeforeMethod
+    public void setUp() throws Exception {
+        this.objectClassControl = MockControl.createNiceControl(ObjectClass.class);
+        this.objectClass = (ObjectClass) objectClassControl.getMock();
+        this.objectFieldControl = MockControl.createNiceControl(ObjectField.class);
+        this.objectField = (ObjectField) objectFieldControl.getMock();
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * Verify the mocks have behaved as expected.
-	 */
-	public void tearDown() {
-		if (this.objectClassControl != null) {
-			this.objectClassControl.verify();
-		}
+        String fieldName = "fieldName";
+        this.objectClass.objectField(fieldName);
+        this.objectClassControl.expectAndReturn(null, this.objectField);
+        this.objectClassControl.replay();
 
-		if (this.objectFieldControl!= null) {
-			this.objectFieldControl.verify();
-		}
-	}
+        this.offb = new ObjectFieldFactoryBean();
+        this.offb.setObjectClass(this.objectClass);
+        this.offb.setFieldName(fieldName);
+    }
 
-	public void testMissingObjectClass() throws Exception {
-		// make sure that EasyMock doesn't verify unused mocks
-		this.objectClassControl = null;
-		this.objectFieldControl= null;
+    /**
+     * {@inheritDoc}
+     * <p/>
+     * Verify the mocks have behaved as expected.
+     */
+    @AfterMethod
+    public void tearDown() {
+        if (this.objectClassControl != null) {
+            this.objectClassControl.verify();
+        }
 
-		// recreate the configuration because the ObjectClass has already been set.
-		this.offb = new ObjectFieldFactoryBean();
+        if (this.objectFieldControl != null) {
+            this.objectFieldControl.verify();
+        }
+    }
 
-		try {
-			this.offb.afterPropertiesSet();
-			fail("Expected IllegalArgumentException because the objectClass hasn't been set.");
-		} catch (IllegalArgumentException e) {
-			// fine, we expected this.
-		}
+    @Test
+    public void testMissingObjectClass() throws Exception {
+        // make sure that EasyMock doesn't verify unused mocks
+        this.objectClassControl = null;
+        this.objectFieldControl = null;
 
-		// now configure it
-		this.offb.setObjectClass(this.objectClass);
-		this.offb.afterPropertiesSet();
+        // recreate the configuration because the ObjectClass has already been set.
+        this.offb = new ObjectFieldFactoryBean();
 
-	}
+        try {
+            this.offb.afterPropertiesSet();
+            AssertJUnit.fail("Expected IllegalArgumentException because the objectClass hasn't been set.");
+        } catch (IllegalArgumentException e) {
+            // fine, we expected this.
+        }
 
-	public void testExplicitConfigurationIsUsed() throws Exception {
-		// make sure that EasyMock doesn't verify unused mocks
-		this.objectFieldControl = null;
+        // now configure it
+        this.offb.setObjectClass(this.objectClass);
+        this.offb.afterPropertiesSet();
 
-		/**
-		 * This is actually tested in pretty much every other method, but it is
-		 * here for completeness.
-		 *
-		 */
+    }
 
-		// construct the objectClass
-		offb.afterPropertiesSet();
-	}
+    @Test
+    public void testExplicitConfigurationIsUsed() throws Exception {
+        // make sure that EasyMock doesn't verify unused mocks
+        this.objectFieldControl = null;
 
-	public void testGetObjectType() throws Exception {
-		// turn off EasyMock verification
-		this.objectFieldControl = null;
+        /**
+         * This is actually tested in pretty much every other method, but it is
+         * here for completeness.
+         *
+         */
 
-		this.offb.afterPropertiesSet();
+        // construct the objectClass
+        offb.afterPropertiesSet();
+    }
 
-		assertEquals("factory class is wrong", this.objectField.getClass(), this.offb.getObjectType());
-	}
+    @Test
+    public void testGetObjectType() throws Exception {
+        // turn off EasyMock verification
+        this.objectFieldControl = null;
 
-	public void testSingleton() throws Exception {
-		// turn off EasyMock verification
-		this.objectFieldControl = null;
-		this.objectClassControl = null;
+        this.offb.afterPropertiesSet();
 
-		this.offb.afterPropertiesSet();
-		assertFalse("Shouldn't be a singleton", this.offb.isSingleton());
+        AssertJUnit.assertEquals("factory class is wrong", this.objectField.getClass(), this.offb.getObjectType());
+    }
 
-	}
+    @Test
+    public void testSingleton() throws Exception {
+        // turn off EasyMock verification
+        this.objectFieldControl = null;
+        this.objectClassControl = null;
 
-	public void testGetObject() throws Exception {
-		// turn off EasyMock verification
-		this.objectFieldControl = null;
+        this.offb.afterPropertiesSet();
+        AssertJUnit.assertFalse("Shouldn't be a singleton", this.offb.isSingleton());
 
-		this.offb.afterPropertiesSet();
+    }
 
-		// construct an empty objectClass. Just make sure it actually works.
-		Object object = this.offb.getObject();
-		assertNotNull("expected at least a not null object", object);
-		assertTrue("object is of wrong type", ObjectField.class.isAssignableFrom(object.getClass()));
-	}
+    @Test
+    public void testGetObject() throws Exception {
+        // turn off EasyMock verification
+        this.objectFieldControl = null;
 
-	public void testDefaultConfigurationIsUsed() throws Exception {
-		// err, no way to test this. Could use AOP to intercept the DB4o.config
-		// method...
+        this.offb.afterPropertiesSet();
 
-		// bypass EasyMock verification.
-		this.objectClassControl = null;
-		this.objectFieldControl = null;
-	}
+        // construct an empty objectClass. Just make sure it actually works.
+        Object object = this.offb.getObject();
+        AssertJUnit.assertNotNull("expected at least a not null object", object);
+        AssertJUnit.assertTrue("object is of wrong type", ObjectField.class.isAssignableFrom(object.getClass()));
+    }
 
-	public void testCascadeOnActivate() throws Exception {
-		Boolean value = Boolean.TRUE;
-		this.objectField.cascadeOnActivate(value.booleanValue());
-		this.objectFieldControl.replay();
+    @Test
+    public void testDefaultConfigurationIsUsed() throws Exception {
+        // err, no way to test this. Could use AOP to intercept the DB4o.config
+        // method...
 
-		this.offb.setCascadeOnActivate(value);
-		this.offb.afterPropertiesSet();
-	}
+        // bypass EasyMock verification.
+        this.objectClassControl = null;
+        this.objectFieldControl = null;
+    }
 
-	public void testCascadeOnDelete() throws Exception {
-		Boolean value = Boolean.TRUE;
-		this.objectField.cascadeOnDelete(value.booleanValue());
-		this.objectFieldControl.replay();
+    @Test
+    public void testCascadeOnActivate() throws Exception {
+        Boolean value = Boolean.TRUE;
+        this.objectField.cascadeOnActivate(value.booleanValue());
+        this.objectFieldControl.replay();
 
-		this.offb.setCascadeOnDelete(value);
-		this.offb.afterPropertiesSet();
-	}
+        this.offb.setCascadeOnActivate(value);
+        this.offb.afterPropertiesSet();
+    }
 
-	public void testCascadeOnUpdate() throws Exception {
-		Boolean value = Boolean.TRUE;
-		this.objectField.cascadeOnUpdate(value.booleanValue());
-		this.objectFieldControl.replay();
+    @Test
+    public void testCascadeOnDelete() throws Exception {
+        Boolean value = Boolean.TRUE;
+        this.objectField.cascadeOnDelete(value.booleanValue());
+        this.objectFieldControl.replay();
 
-		this.offb.setCascadeOnUpdate(value);
-		this.offb.afterPropertiesSet();
-	}
+        this.offb.setCascadeOnDelete(value);
+        this.offb.afterPropertiesSet();
+    }
+
+    @Test
+    public void testCascadeOnUpdate() throws Exception {
+        Boolean value = Boolean.TRUE;
+        this.objectField.cascadeOnUpdate(value.booleanValue());
+        this.objectFieldControl.replay();
+
+        this.offb.setCascadeOnUpdate(value);
+        this.offb.afterPropertiesSet();
+    }
 
 
-	public void testIndexed() throws Exception {
-		Boolean value = Boolean.TRUE;
-		this.objectField.indexed(value.booleanValue());
-		this.objectFieldControl.replay();
+    @Test
+    public void testIndexed() throws Exception {
+        Boolean value = Boolean.TRUE;
+        this.objectField.indexed(value.booleanValue());
+        this.objectFieldControl.replay();
 
-		this.offb.setIndexed(value);
-		this.offb.afterPropertiesSet();
-	}
+        this.offb.setIndexed(value);
+        this.offb.afterPropertiesSet();
+    }
 
-	public void testRenameValue() throws Exception {
-		String value = "renamed value";
-		this.objectField.rename(value);
-		this.objectFieldControl.replay();
+    @Test
+    public void testRenameValue() throws Exception {
+        String value = "renamed value";
+        this.objectField.rename(value);
+        this.objectFieldControl.replay();
 
-		this.offb.setRenameValue(value);
-		this.offb.afterPropertiesSet();
-	}
+        this.offb.setRenameValue(value);
+        this.offb.afterPropertiesSet();
+    }
 
 }

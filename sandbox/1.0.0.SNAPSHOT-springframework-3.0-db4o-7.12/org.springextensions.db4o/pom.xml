@@ -15,6 +15,7 @@
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <org.springframework.version>3.0.0.RC2</org.springframework.version>
     <com.db4o.version>7.12-SNAPSHOT</com.db4o.version>
+    <org.ops4j.pax.exam.version>1.2.0</org.ops4j.pax.exam.version>
   </properties>
 
   <dependencies>
@@ -48,10 +49,10 @@
     </dependency>
     <!-- testing -->
     <dependency>
-      <groupId>org.junit</groupId>
-      <artifactId>com.springsource.org.junit</artifactId>
-      <version>4.4.0</version>
-      <scope>test</scope>
+      <groupId>org.testng</groupId>
+      <artifactId>testng</artifactId>
+      <version>5.10</version>
+      <classifier>jdk15</classifier>
     </dependency>
     <dependency>
       <groupId>org.easymock</groupId>
@@ -65,12 +66,6 @@
       <version>2.3.0</version>
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>org.springframework.test</artifactId>
-      <version>${org.springframework.version}</version>
-      <scope>test</scope>
-    </dependency>
   </dependencies>
 
   <build>
@@ -79,14 +74,24 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <configuration>
-          <source>1.5</source>
-          <target>1.5</target>
+          <source>1.6</source>
+          <target>1.6</target>
         </configuration>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-dependency-plugin</artifactId>
         <version>2.1</version>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>2.4.3</version>
+        <configuration>
+          <includes>
+            <include>**/*Tests.java</include>
+          </includes>
+        </configuration>
       </plugin>
       <plugin>
         <groupId>org.apache.felix</groupId>
