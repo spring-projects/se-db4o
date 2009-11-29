@@ -13,7 +13,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 import org.testng.AssertJUnit;
 import org.testng.annotations.Test;
 
-public class Db4oTransactionManagerTests {
+public class Db4oTransactionManagerTest {
 
     @Test
     public void testTransactionCommit() throws Exception {

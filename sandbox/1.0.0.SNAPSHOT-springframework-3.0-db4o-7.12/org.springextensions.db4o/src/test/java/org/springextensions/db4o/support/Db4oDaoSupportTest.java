@@ -9,7 +9,7 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-public class Db4oDaoSupportTests {
+public class Db4oDaoSupportTest {
 
     private MockControl containerControl;
 

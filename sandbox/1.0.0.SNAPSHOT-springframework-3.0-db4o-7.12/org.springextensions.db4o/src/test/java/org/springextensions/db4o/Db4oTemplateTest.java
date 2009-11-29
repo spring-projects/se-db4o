@@ -25,7 +25,7 @@ import org.testng.annotations.Test;
  *
  * @author Costin Leau
  */
-public class Db4oTemplateTests {
+public class Db4oTemplateTest {
 
     private MockControl containerControl, objectSetControl;
 

@@ -31,7 +31,7 @@ import org.testng.annotations.Test;
  *
  * @since 0.9
  */
-public class ObjectFieldFactoryBeanTests {
+public class ObjectFieldFactoryBeanTest {
 
     private MockControl objectClassControl;
 

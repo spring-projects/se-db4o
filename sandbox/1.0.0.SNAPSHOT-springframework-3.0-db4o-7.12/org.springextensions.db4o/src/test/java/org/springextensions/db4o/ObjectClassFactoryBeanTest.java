@@ -33,7 +33,7 @@ import org.testng.annotations.Test;
  *
  * @since 0.9
  */
-public class ObjectClassFactoryBeanTests {
+public class ObjectClassFactoryBeanTest {
 
     private Class clazz = String.class;
 

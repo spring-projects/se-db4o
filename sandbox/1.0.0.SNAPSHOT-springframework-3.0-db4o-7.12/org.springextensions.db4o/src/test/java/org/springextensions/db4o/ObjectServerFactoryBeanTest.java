@@ -12,7 +12,7 @@ import org.testng.annotations.Test;
  *
  * @author Costin Leau
  */
-public class ObjectServerFactoryBeanTests {
+public class ObjectServerFactoryBeanTest {
 
     private ObjectServerFactoryBean serverFB;
 

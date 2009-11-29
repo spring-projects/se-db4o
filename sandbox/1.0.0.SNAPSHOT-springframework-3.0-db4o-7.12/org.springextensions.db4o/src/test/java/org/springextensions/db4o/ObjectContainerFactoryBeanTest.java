@@ -15,7 +15,7 @@ import org.testng.annotations.Test;
  *
  * @author Costin Leau
  */
-public class ObjectContainerFactoryBeanTests {
+public class ObjectContainerFactoryBeanTest {
 
     private ObjectContainerFactoryBean factoryBean;
 

@@ -28,7 +28,7 @@ import org.testng.annotations.Test;
 /**
  * @author Costin Leau
  */
-public class ConfigurationFactoryBeanTests {
+public class ConfigurationFactoryBeanTest {
 
     ConfigurationFactoryBean cfb;
 
