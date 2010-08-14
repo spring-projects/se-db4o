@@ -96,6 +96,7 @@
           <instructions>
             <Bundle-RequiredExecutionEnvironment>J2SE-1.5</Bundle-RequiredExecutionEnvironment>
             <Bundle-SymbolicName>${artifactId}</Bundle-SymbolicName>
+            <Export-Package>org.springextensions.db4o.*;version=${version}</Export-Package>
           </instructions>
         </configuration>
       </plugin>
