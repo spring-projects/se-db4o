@@ -9,4 +9,4 @@ Import-Template:
  org.springframework.dao.*;version="[3.0.0, 4.0.0)",
  org.springframework.transaction.*;version="[3.0.0, 4.0.0)",
  org.springframework.util.*;version="[3.0.0, 4.0.0)",
- com.db4o.*;version="[7.12, 7.12]",
+ com.db4o.*;version="[8.0, 8.0]",
