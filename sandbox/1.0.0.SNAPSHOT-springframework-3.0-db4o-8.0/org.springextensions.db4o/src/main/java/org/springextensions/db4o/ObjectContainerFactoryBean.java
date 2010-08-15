@@ -1,5 +1,5 @@
 /*
- * Copyright 2005-2009 the original author or authors.
+ * Copyright 2005-2010 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,83 +15,130 @@
  */
 package org.springextensions.db4o;
 
-import java.io.IOException;
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 
 import com.db4o.Db4o;
 import com.db4o.Db4oEmbedded;
 import com.db4o.ObjectContainer;
 import com.db4o.ObjectServer;
-import com.db4o.config.Configuration;
 import com.db4o.config.EmbeddedConfiguration;
 import com.db4o.cs.Db4oClientServer;
 import com.db4o.cs.config.ClientConfiguration;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.DisposableBean;
-import org.springframework.beans.factory.FactoryBean;
-import org.springframework.beans.factory.InitializingBean;
-import org.springframework.core.io.Resource;
+import org.springframework.beans.factory.FactoryBeanNotInitializedException;
 import org.springframework.util.ObjectUtils;
 
 /**
- * Class used for creating an {@link ObjectContainer} in a singleton manner as
- * these are thread-safe.
- * <p/>
- * <p/> The factory bean will try to create using the available properties in
- * the following order:
- * <ol>
- * <li>if databaseFile is set, a local file based client will be created.</li>
- * <li>if memory file is set, a local memory based client will be created.
- * <li>
- * <li>if server is set, a client within the same VM as the server will be
- * created.</li>
- * <li>if all the above fail the client will be opened using hostName, port,
- * user, password to a remote server.</li>
- * </ol>
- * <p/>
- * <p/>
- * <p/> Accepts a {@link Configuration} object for local configurations. If none
- * is given, the global db4o configuration will be used.
+ * <p>example <b>OSGi Blueprint</b> configuration for embedded in-memory database:</p>
+ * <pre>
+ * &lt;blueprint xmlns=&quot;http://www.osgi.org/xmlns/blueprint/v1.0.0&quot;&gt;
+ *
+ *   &lt;bean id=&quot;embeddedConfiguration&quot; class=&quot;org.springextensions.db4o.config.EmbeddedConfigurationFactoryBean&quot;&gt;
+ *     &lt;property name=&quot;file.storage&quot;&gt;
+ *       &lt;bean class=&quot;com.db4o.io.PagingMemoryStorage&quot;/&gt;
+ *     &lt;/property&gt;
+ *   &lt;/bean&gt;
+ *
+ *   &lt;bean id=&quot;objectContainerFactory&quot; class=&quot;org.springextensions.db4o.ObjectContainerFactoryBean&quot; init-method=&quot;initialize&quot; destroy-method=&quot;destroy&quot;&gt;
+ *     &lt;property name=&quot;name&quot; value=&quot;memory&quot;/&gt;
+ *     &lt;property name=&quot;embeddedConfiguration&quot;&gt;
+ *       &lt;bean factory-ref=&quot;embeddedConfiguration&quot; factory-method=&quot;getObject&quot;/&gt;
+ *     &lt;/property&gt;
+ *   &lt;/bean&gt;
+ *
+ *   &lt;bean id=&quot;objectContainer&quot; factory-ref=&quot;objectContainerFactory&quot; factory-method=&quot;getObject&quot;/&gt;
+ *
+ *   &lt;bean id=&quot;db4oTemplate&quot; class=&quot;org.springextensions.db4o.Db4oTemplate&quot;&gt;
+ *     &lt;argument ref=&quot;objectContainer&quot;/&gt;
+ *   &lt;/bean&gt;
+ *
+ * &lt;/blueprint&gt;
+ * </pre>
  *
  * @author Costin Leau
- * @see com.db4o.Db4o
+ * @author olli
  */
-public class ObjectContainerFactoryBean implements FactoryBean<ObjectContainer>, InitializingBean, DisposableBean {
-
-    private static final Log log = LogFactory.getLog(ObjectContainerFactoryBean.class);
+public class ObjectContainerFactoryBean { // implements FactoryBean<ObjectContainer> { https://jira.springframework.org/browse/OSGI-808
 
     private ObjectContainer container;
 
-    // Local mode
+    /**
+     * @see com.db4o.Db4oEmbedded#openFile(String)
+     */
+    private String name;
 
-    // file based
-    private Resource databaseFile;
-
-    // memory based
-    // TODO: Storage
-
-    // Server mode
-
-    // local server mode
+    /**
+     * @see com.db4o.ObjectServer#openClient()
+     */
     private ObjectServer server;
 
-    // remote server mode
+    /**
+     * @see com.db4o.cs.Db4oClientServer#openClient(String, int, String, String)
+     */
     private String hostname;
 
+    /**
+     * @see com.db4o.cs.Db4oClientServer#openClient(String, int, String, String)
+     */
+    private int port;
+
+    /**
+     * @see com.db4o.cs.Db4oClientServer#openClient(String, int, String, String)
+     */
     private String username;
 
+    /**
+     * @see com.db4o.cs.Db4oClientServer#openClient(String, int, String, String)
+     */
     private String password;
-
-    private int port;
 
     private EmbeddedConfiguration embeddedConfiguration;
 
     private ClientConfiguration clientConfiguration;
 
+    private final Log log = LogFactory.getLog(ObjectContainerFactoryBean.class);
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setServer(ObjectServer server) {
+        this.server = server;
+    }
+
+    public void setHostname(String hostname) {
+        this.hostname = hostname;
+    }
+
+    public void setPort(int port) {
+        this.port = port;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setEmbeddedConfiguration(EmbeddedConfiguration embeddedConfiguration) {
+        this.embeddedConfiguration = embeddedConfiguration;
+    }
+
+    public void setClientConfiguration(ClientConfiguration clientConfiguration) {
+        this.clientConfiguration = clientConfiguration;
+    }
+
     /**
      * @see org.springframework.beans.factory.FactoryBean#getObject()
      */
     public ObjectContainer getObject() throws Exception {
+        if (container == null) {
+            throw new FactoryBeanNotInitializedException("object container not opened");
+        }
         return container;
     }
 
@@ -109,109 +156,54 @@ public class ObjectContainerFactoryBean implements FactoryBean<ObjectContainer>,
         return true;
     }
 
-    /**
-     * @see org.springframework.beans.factory.InitializingBean#afterPropertiesSet()
-     */
-    public void afterPropertiesSet() throws Exception {
-        if (databaseFile != null) {
-            container = openEmbeddedContainer(embeddedConfiguration, databaseFile.getFile().getAbsolutePath());
-            /*
-        } else if (memoryFile != null) { // TODO: Storage
-            container = ExtDb4o.openMemoryFile(configuration, memoryFile);
-            log.info("opened db4o local memory-based objectContainer @" + ObjectUtils.getIdentityHexString(container));
-            */
-        } else if (embeddedConfiguration != null && embeddedConfiguration.file().storage() != null) {
-            container = openEmbeddedContainer(embeddedConfiguration, "TESTING"); // TODO
+    @PostConstruct
+    public void initialize() {
+        if (name != null) {
+            container = openEmbeddedContainer(embeddedConfiguration, name);
         } else if (server != null) {
-            container = openEmbeddedClient(server);
+            container = openEmbeddedClientContainer(server);
         } else if (hostname != null && port > 0 && username != null) {
-            container = openRemoteClient(clientConfiguration, hostname, port, username, password);
+            container = openRemoteClientContainer(clientConfiguration, hostname, port, username, password);
         } else {
-            throw new IllegalArgumentException("mandatory fields are not set; databaseFile or memoryFile or container or (hostName, port, user) are required");
+            throw new IllegalArgumentException("mandatory fields are not set: database name or embedded database server or remote database server (hostname, port, username)");
         }
         log.info(Db4o.version());
     }
 
-    protected ObjectContainer openEmbeddedContainer(EmbeddedConfiguration embeddedConfiguration, String filename) throws IOException {
-        if (embeddedConfiguration == null) {
-            embeddedConfiguration = Db4oEmbedded.newConfiguration();
-        }
-        ObjectContainer container = Db4oEmbedded.openFile(embeddedConfiguration, filename);
-        log.info("opened db4o local file-based objectContainer @" + ObjectUtils.getIdentityHexString(container));
-        return container;
-    }
-
-    protected ObjectContainer openEmbeddedClient(ObjectServer server) {
-        ObjectContainer container = server.openClient();
-        log.info("opened db4o embedded server-based objectContainer @" + ObjectUtils.getIdentityHexString(container));
-        return container;
-    }
-
-    protected ObjectContainer openRemoteClient(ClientConfiguration clientConfiguration, String hostname, int port, String username, String password) {
-        if (clientConfiguration == null) {
-            clientConfiguration = Db4oClientServer.newClientConfiguration();
-        }
-        container = Db4oClientServer.openClient(clientConfiguration, hostname, port, username, password);
-        log.info("opened db4o remote server-based objectContainer @" + ObjectUtils.getIdentityHexString(container));
-        return container;
-    }
-
-    /**
-     * @see org.springframework.beans.factory.DisposableBean#destroy()
-     */
-    public void destroy() throws Exception {
+    @PreDestroy
+    public void destroy() {
         log.info("closing object container " + ObjectUtils.getIdentityHexString(container));
         container.close();
     }
 
-    /**
-     * @param file The file to set.
-     */
-    public void setDatabaseFile(Resource file) {
-        this.databaseFile = file;
+    protected ObjectContainer openEmbeddedContainer(EmbeddedConfiguration embeddedConfiguration, String name) {
+        ObjectContainer container;
+        if (embeddedConfiguration == null) {
+            container = Db4oEmbedded.openFile(name);
+        } else {
+            log.info("using configuration: embedded");
+            container = Db4oEmbedded.openFile(embeddedConfiguration, name);
+        }
+        log.info("embedded container opened: " + ObjectUtils.getIdentityHexString(container));
+        return container;
     }
 
-    /**
-     * @param hostname The hostname to set.
-     */
-    public void setHostname(String hostname) {
-        this.hostname = hostname;
+    protected ObjectContainer openEmbeddedClientContainer(ObjectServer server) {
+        ObjectContainer container = server.openClient();
+        log.info("embedded client container opened: " + ObjectUtils.getIdentityHexString(container));
+        return container;
     }
 
-    /**
-     * @param password The password to set.
-     */
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    /**
-     * @param port The port to set.
-     */
-    public void setPort(int port) {
-        this.port = port;
-    }
-
-    /**
-     * @param server The server to set.
-     */
-    public void setServer(ObjectServer server) {
-        this.server = server;
-    }
-
-    /**
-     * @param username The username to set.
-     */
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public void setEmbeddedConfiguration(EmbeddedConfiguration embeddedConfiguration) {
-        this.embeddedConfiguration = embeddedConfiguration;
-    }
-
-    public void setClientConfiguration(ClientConfiguration clientConfiguration) {
-        this.clientConfiguration = clientConfiguration;
+    protected ObjectContainer openRemoteClientContainer(ClientConfiguration clientConfiguration, String hostname, int port, String username, String password) {
+        ObjectContainer container;
+        if (clientConfiguration == null) {
+            container = Db4oClientServer.openClient(hostname, port, username, password);
+        } else {
+            log.info("using configuration: client");
+            container = Db4oClientServer.openClient(clientConfiguration, hostname, port, username, password);
+        }
+        log.info("remote client container opened: " + ObjectUtils.getIdentityHexString(container));
+        return container;
     }
 
 }

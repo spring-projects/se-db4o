@@ -20,6 +20,7 @@ import com.db4o.ObjectContainer;
 import com.db4o.config.EmbeddedConfiguration;
 import com.db4o.ext.ExtObjectContainer;
 import com.db4o.io.PagingMemoryStorage;
+import org.springextensions.db4o.config.FileConfigurer;
 import org.testng.AssertJUnit;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeMethod;
@@ -32,37 +33,40 @@ import org.testng.annotations.Test;
  */
 public class ObjectContainerFactoryBeanTest {
 
-    private ObjectContainerFactoryBean factoryBean;
+    private ObjectContainerFactoryBean objectContainerFactoryBean;
 
     @BeforeMethod
     public void setUp() throws Exception {
         EmbeddedConfiguration embeddedConfiguration = Db4oEmbedded.newConfiguration();
-        embeddedConfiguration.file().storage(new PagingMemoryStorage());
-        factoryBean = new ObjectContainerFactoryBean();
-        factoryBean.setEmbeddedConfiguration(embeddedConfiguration);
-        // factoryBean.setMemoryFile(new MemoryFile());
-        factoryBean.afterPropertiesSet();
+        FileConfigurer fileConfigurer = new FileConfigurer(embeddedConfiguration.file());
+        fileConfigurer.setStorage(new PagingMemoryStorage());
+        objectContainerFactoryBean = new ObjectContainerFactoryBean();
+        objectContainerFactoryBean.setName("ObjectContainerFactoryBeanTest");
+        objectContainerFactoryBean.setEmbeddedConfiguration(embeddedConfiguration);
+        objectContainerFactoryBean.initialize();
     }
 
     @AfterTest
     public void tearDown() throws Exception {
-        factoryBean.destroy();
+        objectContainerFactoryBean.destroy();
     }
 
     /*
       * Test method for 'org.springextensions.db4o.ObjectContainerFactoryBean.getObjectType()'
       */
+
     @Test
     public void testGetObjectType() {
-        AssertJUnit.assertTrue(ObjectContainer.class.isAssignableFrom(factoryBean.getObjectType()));
+        AssertJUnit.assertTrue(ObjectContainer.class.isAssignableFrom(objectContainerFactoryBean.getObjectType()));
     }
 
     /*
       * Test method for 'org.springextensions.db4o.ObjectContainerFactoryBean.isSingleton()'
       */
+
     @Test
     public void testIsSingleton() {
-        AssertJUnit.assertTrue(factoryBean.isSingleton());
+        AssertJUnit.assertTrue(objectContainerFactoryBean.isSingleton());
     }
 
     /*
@@ -71,10 +75,10 @@ public class ObjectContainerFactoryBeanTest {
     /*
     @Test
     public void testAfterPropertiesSet() throws Exception {
-        factoryBean.afterPropertiesSet();
+        objectContainerFactoryBean.afterPropertiesSet();
         try {
-            // TODO: factoryBean.setMemoryFile(null);
-            factoryBean.afterPropertiesSet();
+            objectContainerFactoryBean.setName(null);
+            objectContainerFactoryBean.afterPropertiesSet();
             AssertJUnit.fail("expected illegal argument exception");
         } catch (IllegalArgumentException iae) {
             // it's okay
@@ -85,11 +89,12 @@ public class ObjectContainerFactoryBeanTest {
     /*
       * Test method for 'org.springextensions.db4o.ObjectContainerFactoryBean.destroy()'
       */
+
     @Test
     public void testDestroy() throws Exception {
-        AssertJUnit.assertFalse(((ExtObjectContainer) factoryBean.getObject()).isClosed());
-        factoryBean.destroy();
-        AssertJUnit.assertTrue(((ExtObjectContainer) factoryBean.getObject()).isClosed());
+        AssertJUnit.assertFalse(((ExtObjectContainer) objectContainerFactoryBean.getObject()).isClosed());
+        objectContainerFactoryBean.destroy();
+        AssertJUnit.assertTrue(((ExtObjectContainer) objectContainerFactoryBean.getObject()).isClosed());
     }
 
 }
