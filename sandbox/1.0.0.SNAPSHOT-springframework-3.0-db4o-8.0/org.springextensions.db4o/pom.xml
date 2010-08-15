@@ -10,6 +10,42 @@
   <name>Spring db4o Extension</name>
   <packaging>bundle</packaging>
 
+  <url>http://www.springsource.org/extensions/se-db4o</url>
+
+  <description>Spring extension for anyone integrating db4o into an enterprise application wishing to achieve declarative transaction management, exception translation and ease of configuration.</description>
+
+  <licenses>
+    <license>
+      <name>Apache License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0</url>
+    </license>
+  </licenses>
+
+  <organization>
+    <name>Spring Community</name>
+  </organization>
+
+  <developers>
+    <developer>
+      <name>Costin Leau</name>
+    </developer>
+    <developer>
+      <name>Oliver Lietz</name>
+    </developer>
+  </developers>
+
+  <scm>
+    <url>https://src.springframework.org/svn/se-db4o/</url>
+  </scm>
+
+  <issueManagement>
+    <url>http://jira.springframework.org/browse/SEDBFO</url>
+  </issueManagement>
+
+  <ciManagement>
+    <url>http://build.springframework.org/browse/EXT-DB4OSNAPSHOT</url>
+  </ciManagement>
+
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
