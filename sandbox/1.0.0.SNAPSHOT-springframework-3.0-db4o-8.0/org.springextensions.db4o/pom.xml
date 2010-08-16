@@ -89,6 +89,7 @@
       <artifactId>testng</artifactId>
       <version>5.10</version>
       <classifier>jdk15</classifier>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.easymock</groupId>
