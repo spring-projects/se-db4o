@@ -4,103 +4,56 @@
 
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>org.springextensions.db4o</groupId>
+  <parent>
+    <groupId>org.springextensions.db4o</groupId>
+    <artifactId>spring-db4o</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
+
   <artifactId>org.springextensions.db4o</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
   <name>Spring db4o Extension</name>
   <packaging>bundle</packaging>
-
-  <url>http://www.springsource.org/extensions/se-db4o</url>
-
-  <description>Spring extension for anyone integrating db4o into an enterprise application wishing to achieve declarative transaction management, exception translation and ease of configuration.</description>
-
-  <licenses>
-    <license>
-      <name>Apache License, Version 2.0</name>
-      <url>http://www.apache.org/licenses/LICENSE-2.0</url>
-    </license>
-  </licenses>
-
-  <organization>
-    <name>Spring Community</name>
-  </organization>
-
-  <developers>
-    <developer>
-      <name>Costin Leau</name>
-    </developer>
-    <developer>
-      <name>Oliver Lietz</name>
-    </developer>
-  </developers>
-
-  <scm>
-    <url>https://src.springframework.org/svn/se-db4o/</url>
-  </scm>
-
-  <issueManagement>
-    <url>http://jira.springframework.org/browse/SEDBFO</url>
-  </issueManagement>
-
-  <ciManagement>
-    <url>http://build.springframework.org/browse/EXT-DB4OSNAPSHOT</url>
-  </ciManagement>
-
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <org.springframework.version>3.0.0.RELEASE</org.springframework.version>
-    <com.db4o.version>8.0-SNAPSHOT</com.db4o.version>
-    <org.ops4j.pax.exam.version>1.2.0</org.ops4j.pax.exam.version>
-  </properties>
 
   <dependencies>
     <!-- Spring Framework -->
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>org.springframework.beans</artifactId>
-      <version>${org.springframework.version}</version>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>org.springframework.core</artifactId>
-      <version>${org.springframework.version}</version>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>org.springframework.transaction</artifactId>
-      <version>${org.springframework.version}</version>
     </dependency>
     <!-- Apache Commons -->
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>com.springsource.org.apache.commons.logging</artifactId>
-      <version>1.1.1</version>
     </dependency>
     <!-- db4o -->
     <dependency>
       <groupId>com.db4o</groupId>
       <artifactId>db4o-full-java5</artifactId>
-      <version>${com.db4o.version}</version>
     </dependency>
     <!-- testing -->
     <dependency>
       <groupId>org.testng</groupId>
       <artifactId>testng</artifactId>
-      <version>5.10</version>
       <classifier>jdk15</classifier>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.easymock</groupId>
       <artifactId>com.springsource.org.easymock</artifactId>
-      <version>2.3.0</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.easymock</groupId>
       <artifactId>com.springsource.org.easymock.classextension</artifactId>
-      <version>2.3.0</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -139,49 +92,5 @@
       </plugin>
     </plugins>
   </build>
-
-  <reporting>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-javadoc-plugin</artifactId>
-        <version>2.7</version>
-        <configuration>
-          <links>
-            <link>http://developer.db4o.com/Documentation/Reference/db4o-8.0/java/api/</link>
-            <link>http://static.springsource.org/spring/docs/3.0.x/javadoc-api/</link>
-          </links>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-dependency-plugin</artifactId>
-        <version>2.1</version>
-      </plugin>
-    </plugins>
-  </reporting>
-
-  <repositories>
-    <repository>
-      <id>com.springsource.repository.bundles.release</id>
-      <url>http://repository.springsource.com/maven/bundles/release</url>
-    </repository>
-    <repository>
-      <id>com.springsource.repository.bundles.external</id>
-      <url>http://repository.springsource.com/maven/bundles/external</url>
-    </repository>
-    <repository>
-      <id>com.springsource.repository.bundles.snapshot</id>
-      <url>http://repository.springsource.com/maven/bundles/snapshot</url>
-    </repository>
-    <repository>
-      <id>com.springsource.repository.bundles.milestone</id>
-      <url>http://repository.springsource.com/maven/bundles/milestone</url>
-    </repository>
-    <repository>
-      <id>com.db4o.source</id>
-      <url>http://source.db4o.com/maven</url>
-    </repository>
-  </repositories>
 
 </project>
