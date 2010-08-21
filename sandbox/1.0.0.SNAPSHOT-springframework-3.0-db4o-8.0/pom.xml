@@ -56,10 +56,17 @@
 
   <modules>
     <module>org.springextensions.db4o</module>
+    <module>org.springextensions.db4o-it-spring</module>
   </modules>
 
   <dependencyManagement>
     <dependencies>
+      <!-- Spring db4o Extension -->
+      <dependency>
+        <groupId>org.springextensions.db4o</groupId>
+        <artifactId>org.springextensions.db4o</artifactId>
+        <version>${project.version}</version>
+      </dependency>
       <!-- Spring Framework -->
       <dependency>
         <groupId>org.springframework</groupId>
@@ -95,6 +102,11 @@
         <version>5.10</version>
         <classifier>jdk15</classifier>
         <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>org.springframework.test</artifactId>
+        <version>${org.springframework.version}</version>
       </dependency>
       <dependency>
         <groupId>org.easymock</groupId>
