@@ -1,5 +1,5 @@
 /*
- * Copyright 2005-2009 the original author or authors.
+ * Copyright 2005-2010 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,10 +15,11 @@
  */
 package org.springextensions.db4o;
 
-import java.io.IOException;
-import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.Properties;
+
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 
 import com.db4o.Db4o;
 import com.db4o.ObjectServer;
@@ -26,37 +27,61 @@ import com.db4o.cs.Db4oClientServer;
 import com.db4o.cs.config.ServerConfiguration;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.BeanInitializationException;
-import org.springframework.beans.factory.DisposableBean;
-import org.springframework.beans.factory.FactoryBean;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.core.io.Resource;
 import org.springframework.util.ObjectUtils;
 
 /**
- * FactoryBean for creating {@link com.db4o.ObjectServer}s. This class adds support for
- * configuring user access through the userAccess property which takes a
- * Properties object with key the user name and value the password.
- * <p/>
- * <p/> Accepts a {@link com.db4o.cs.config.ServerConfiguration} object for local configurations. If none
- * is given, the global db4o configuration will be used.
+ * FactoryBean for creating {@link com.db4o.ObjectServer}s.
+ * This class adds support for configuring user access through the users property
+ * which takes a Properties object with key the user name and value the password.
  *
  * @author Costin Leau
- * @see com.db4o.Db4o
+ * @author olli
  */
-public class ObjectServerFactoryBean implements FactoryBean<ObjectServer>, InitializingBean, DisposableBean {
-
-    private static final Log log = LogFactory.getLog(ObjectServerFactoryBean.class);
-
-    private Properties userAccess;
+public class ObjectServerFactoryBean { // implements FactoryBean<ObjectServer> { https://jira.springframework.org/browse/OSGI-808
 
     private ObjectServer server;
 
     private Resource databaseFile;
 
+    private int port;
+
     private ServerConfiguration serverConfiguration;
 
-    private int port;
+    private Properties users;
+
+    private final Log log = LogFactory.getLog(ObjectServerFactoryBean.class);
+
+    public ObjectServerFactoryBean() {
+    }
+
+    /**
+     * @see com.db4o.cs.Db4oClientServer#openServer(String, int)
+     */
+    public void setDatabaseFile(Resource databaseFile) {
+        this.databaseFile = databaseFile;
+    }
+
+    /**
+     * @see com.db4o.cs.Db4oClientServer#openServer(String, int)
+     */
+    public void setPort(int port) {
+        this.port = port;
+    }
+
+    /**
+     * @see com.db4o.cs.Db4oClientServer#openServer(com.db4o.cs.config.ServerConfiguration, String, int)
+     */
+    public void setServerConfiguration(ServerConfiguration serverConfiguration) {
+        this.serverConfiguration = serverConfiguration;
+    }
+
+    /**
+     * @see com.db4o.ObjectServer#grantAccess(String, String)
+     */
+    public void setUsers(Properties users) {
+        this.users = users;
+    }
 
     /**
      * @see org.springframework.beans.factory.FactoryBean#getObject()
@@ -79,102 +104,39 @@ public class ObjectServerFactoryBean implements FactoryBean<ObjectServer>, Initi
         return true;
     }
 
-    /**
-     * @see org.springframework.beans.factory.InitializingBean#afterPropertiesSet()
-     */
-    public void afterPropertiesSet() throws Exception {
+    @PostConstruct
+    public void initialize() throws Exception {
         if (databaseFile == null) {
-            throw new IllegalArgumentException("databaseFile is required");
-        }
-        if (port < 0) {
-            throw new IllegalArgumentException("port must be greater then or equal to 0");
+            throw new IllegalArgumentException("database file is required");
         }
 
-        log.info("Database file is " + databaseFile.getFile().getAbsolutePath());
+        log.info("database file is " + databaseFile.getFile().getAbsolutePath());
 
-        // initialize the configuration to use only one method variant
         if (serverConfiguration == null) {
-            serverConfiguration = Db4oClientServer.newServerConfiguration();
+            server = Db4oClientServer.openServer(databaseFile.getFile().getAbsolutePath(), port);
+        } else {
+            log.info("using configuration: server");
+            server = Db4oClientServer.openServer(serverConfiguration, databaseFile.getFile().getAbsolutePath(), port);
         }
 
-        server = Db4oClientServer.openServer(serverConfiguration, databaseFile.getFile().getAbsolutePath(), port);
-
+        log.info("opened object server " + ObjectUtils.getIdentityHexString(server) + " at port " + server.ext().port());
         log.info(Db4o.version());
-        log.info("opened db4o server @" + ObjectUtils.getIdentityHexString(server));
 
-        if (userAccess != null) {
-            boolean debug = log.isDebugEnabled();
-            for (Iterator iter = userAccess.entrySet().iterator(); iter.hasNext();) {
-                Entry entry = (Entry) iter.next();
-                server.grantAccess((String) entry.getKey(), (String) entry.getValue());
-                if (debug)
-                    log.debug("grated access to user `" + entry.getKey() + "` with password `"
-                            + ObjectServerUtils.maskString(((String) entry.getValue())) + "`");
+        if (users != null) {
+            for (Object o : users.entrySet()) {
+                Entry entry = (Entry) o;
+                String username = (String) entry.getKey();
+                String password = (String) entry.getValue();
+                server.grantAccess(username, password);
+                log.debug("access granted to user '" + username + "' with password '" + ObjectServerUtils.maskString(password) + "'");
             }
         }
     }
 
-    /**
-     * @see org.springframework.beans.factory.DisposableBean#destroy()
-     */
+    @PreDestroy
     public void destroy() throws Exception {
-        log.info("closing object server @" + ObjectUtils.getIdentityHexString(server));
+        log.info("closing object server " + ObjectUtils.getIdentityHexString(server));
         server.close();
-    }
-
-    /**
-     * @param userAccess The userAccess to set.
-     */
-    public void setUserAccess(Properties userAccess) {
-        this.userAccess = userAccess;
-    }
-
-    public void setUserAccessLocation(Resource userAccess) {
-        this.userAccess = new Properties();
-        try {
-            this.userAccess.load(userAccess.getInputStream());
-        }
-        catch (IOException e) {
-            throw new BeanInitializationException("can't find resource", e);
-        }
-    }
-
-    /**
-     * @return Returns the databaseFile.
-     */
-    public Resource getDatabaseFile() {
-        return databaseFile;
-    }
-
-    /**
-     * @param databaseFile The databaseFile to set.
-     */
-    public void setDatabaseFile(Resource databaseFile) {
-        this.databaseFile = databaseFile;
-    }
-
-    /**
-     * @return Returns the port.
-     */
-    public int getPort() {
-        return port;
-    }
-
-    /**
-     * @param port The port to set.
-     */
-    public void setPort(int port) {
-        this.port = port;
-    }
-
-    /**
-     * Set the configuration object to be used when creating the server. If none
-     * is specified, the global db4o configuration is used.
-     *
-     * @param serverConfiguration The configuration to set.
-     */
-    public void setServerConfiguration(ServerConfiguration serverConfiguration) {
-        this.serverConfiguration = serverConfiguration;
     }
 
 }

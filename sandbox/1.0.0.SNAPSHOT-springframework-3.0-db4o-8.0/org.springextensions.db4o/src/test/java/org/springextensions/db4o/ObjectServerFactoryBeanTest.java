@@ -36,7 +36,7 @@ public class ObjectServerFactoryBeanTest {
         serverFB = new ObjectServerFactoryBean();
         serverFB.setDatabaseFile(new ClassPathResource("testdb.file"));
         serverFB.setPort(0);
-        serverFB.afterPropertiesSet();
+        serverFB.initialize();
     }
 
     @AfterMethod
@@ -61,13 +61,13 @@ public class ObjectServerFactoryBeanTest {
     }
 
     /*
-      * Test method for 'org.springextensions.db4o.ObjectServerFactoryBean.afterPropertiesSet()'
+      * Test method for 'org.springextensions.db4o.ObjectServerFactoryBean.initialize()'
       */
     @Test
     public void testAfterPropertiesSet() throws Exception {
         serverFB.setDatabaseFile(null);
         try {
-            serverFB.afterPropertiesSet();
+            serverFB.initialize();
             AssertJUnit.fail("expected IllegalArgumentException");
         }
         catch (IllegalArgumentException iae) {
