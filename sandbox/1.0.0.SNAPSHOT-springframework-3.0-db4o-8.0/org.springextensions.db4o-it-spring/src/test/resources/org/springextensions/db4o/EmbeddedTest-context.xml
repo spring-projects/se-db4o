@@ -13,7 +13,7 @@
     </property>
   </bean>
 
-  <bean id="objectContainerFactory" class="org.springextensions.db4o.ObjectContainerFactoryBean" init-method="initialize" destroy-method="destroy">
+  <bean id="objectContainerFactory" class="org.springextensions.db4o.ObjectContainerFactoryBean">
     <property name="name" value="memory"/>
     <property name="embeddedConfiguration">
       <bean factory-bean="embeddedConfiguration" factory-method="getObject"/>
