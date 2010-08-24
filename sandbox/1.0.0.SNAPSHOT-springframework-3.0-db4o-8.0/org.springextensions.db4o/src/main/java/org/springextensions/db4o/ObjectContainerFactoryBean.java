@@ -31,32 +31,6 @@ import org.springframework.beans.factory.FactoryBeanNotInitializedException;
 import org.springframework.util.ObjectUtils;
 
 /**
- * <p>example <b>OSGi Blueprint</b> configuration for embedded in-memory database:</p>
- * <pre>
- * &lt;blueprint xmlns=&quot;http://www.osgi.org/xmlns/blueprint/v1.0.0&quot;&gt;
- *
- *   &lt;bean id=&quot;embeddedConfiguration&quot; class=&quot;org.springextensions.db4o.config.EmbeddedConfigurationFactoryBean&quot;&gt;
- *     &lt;property name=&quot;file.storage&quot;&gt;
- *       &lt;bean class=&quot;com.db4o.io.PagingMemoryStorage&quot;/&gt;
- *     &lt;/property&gt;
- *   &lt;/bean&gt;
- *
- *   &lt;bean id=&quot;objectContainerFactory&quot; class=&quot;org.springextensions.db4o.ObjectContainerFactoryBean&quot; init-method=&quot;initialize&quot; destroy-method=&quot;destroy&quot;&gt;
- *     &lt;property name=&quot;name&quot; value=&quot;memory&quot;/&gt;
- *     &lt;property name=&quot;embeddedConfiguration&quot;&gt;
- *       &lt;bean factory-ref=&quot;embeddedConfiguration&quot; factory-method=&quot;getObject&quot;/&gt;
- *     &lt;/property&gt;
- *   &lt;/bean&gt;
- *
- *   &lt;bean id=&quot;objectContainer&quot; factory-ref=&quot;objectContainerFactory&quot; factory-method=&quot;getObject&quot;/&gt;
- *
- *   &lt;bean id=&quot;db4oTemplate&quot; class=&quot;org.springextensions.db4o.Db4oTemplate&quot;&gt;
- *     &lt;argument ref=&quot;objectContainer&quot;/&gt;
- *   &lt;/bean&gt;
- *
- * &lt;/blueprint&gt;
- * </pre>
- *
  * @author Costin Leau
  * @author olli
  */
