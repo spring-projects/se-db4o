@@ -13,8 +13,9 @@ public class EmbeddedClientServerTest extends ObjectContainerTest {
     @Test
     public void testObjectContainer() {
         Assert.assertNotNull(objectContainer);
+        Assert.assertNotNull(db4oOperations);
         Object object = new Object();
-        objectContainer.store(object);
+        db4oOperations.store(object);
     }
 
 }

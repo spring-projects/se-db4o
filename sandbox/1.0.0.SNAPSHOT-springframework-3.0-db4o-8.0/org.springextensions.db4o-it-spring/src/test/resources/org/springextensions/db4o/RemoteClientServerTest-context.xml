@@ -27,6 +27,10 @@
 
   <bean id="objectContainer" factory-bean="objectContainerFactory" factory-method="getObject"/>
 
+  <bean id="db4oTemplate" class="org.springextensions.db4o.Db4oTemplate">
+    <constructor-arg ref="objectContainer"/>
+  </bean>
+
   <util:properties id="config" location="classpath:config.properties"/>
 
 </beans>

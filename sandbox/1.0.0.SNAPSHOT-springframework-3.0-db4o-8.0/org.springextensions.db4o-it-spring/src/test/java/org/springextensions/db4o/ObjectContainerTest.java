@@ -12,4 +12,7 @@ public class ObjectContainerTest extends AbstractTestNGSpringContextTests {
     @Autowired
     protected ObjectContainer objectContainer;
 
+    @Autowired
+    protected Db4oOperations db4oOperations;
+
 }
