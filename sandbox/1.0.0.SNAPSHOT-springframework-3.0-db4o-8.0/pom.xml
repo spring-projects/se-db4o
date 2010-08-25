@@ -23,6 +23,7 @@
 
   <organization>
     <name>Spring db4o Community</name>
+    <url>http://www.springsource.org/extensions/se-db4o</url>
   </organization>
 
   <developers>
@@ -135,6 +136,11 @@
             <link>http://static.springsource.org/spring/docs/3.0.x/javadoc-api/</link>
           </links>
         </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-site-plugin</artifactId>
+        <version>2.1</version>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
