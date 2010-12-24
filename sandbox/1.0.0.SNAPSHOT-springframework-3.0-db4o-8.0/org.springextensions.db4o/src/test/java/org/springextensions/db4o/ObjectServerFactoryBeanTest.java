@@ -17,63 +17,52 @@ package org.springextensions.db4o;
 
 import com.db4o.ObjectServer;
 import org.springframework.core.io.ClassPathResource;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 /**
- * Test class for Object Server FactoryBean.
+ * Test class for ObjectServerFactoryBean.
  *
  * @author Costin Leau
  */
 public class ObjectServerFactoryBeanTest {
 
-    private ObjectServerFactoryBean serverFB;
+    private ObjectServerFactoryBean objectServerFactoryBean;
 
     @BeforeMethod
     public void setUp() throws Exception {
-        serverFB = new ObjectServerFactoryBean();
-        serverFB.setDatabaseFile(new ClassPathResource("testdb.file"));
-        serverFB.setPort(0);
-        serverFB.initialize();
+        objectServerFactoryBean = new ObjectServerFactoryBean();
+        objectServerFactoryBean.setDatabaseFile(new ClassPathResource("testdb.file"));
+        objectServerFactoryBean.setPort(0);
+        objectServerFactoryBean.initialize();
     }
 
     @AfterMethod
     public void tearDown() throws Exception {
-        serverFB.destroy();
+        objectServerFactoryBean.destroy();
     }
 
-    /*
-      * Test method for 'org.springextensions.db4o.ObjectServerFactoryBean.getObjectType()'
-      */
     @Test
     public void testGetObjectType() {
-        AssertJUnit.assertTrue(ObjectServer.class.isAssignableFrom(serverFB.getObjectType()));
+        Assert.assertTrue(ObjectServer.class.isAssignableFrom(objectServerFactoryBean.getObjectType()));
     }
 
-    /*
-      * Test method for 'org.springextensions.db4o.ObjectServerFactoryBean.isSingleton()'
-      */
     @Test
     public void testIsSingleton() {
-        AssertJUnit.assertTrue(serverFB.isSingleton());
+        Assert.assertTrue(objectServerFactoryBean.isSingleton());
     }
 
-    /*
-      * Test method for 'org.springextensions.db4o.ObjectServerFactoryBean.initialize()'
-      */
     @Test
-    public void testAfterPropertiesSet() throws Exception {
-        serverFB.setDatabaseFile(null);
+    public void testInitialize() throws Exception {
+        objectServerFactoryBean.setDatabaseFile(null);
         try {
-            serverFB.initialize();
-            AssertJUnit.fail("expected IllegalArgumentException");
+            objectServerFactoryBean.initialize();
+            Assert.fail("expected IllegalArgumentException");
+        } catch (IllegalArgumentException iae) {
+            // expected
         }
-        catch (IllegalArgumentException iae) {
-            // it's okay
-        }
-
     }
 
 }

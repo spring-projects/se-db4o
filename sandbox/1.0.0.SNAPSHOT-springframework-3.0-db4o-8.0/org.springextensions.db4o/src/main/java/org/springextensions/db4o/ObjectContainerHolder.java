@@ -26,14 +26,11 @@ import com.db4o.ObjectContainer;
  *
  */
 public class ObjectContainerHolder extends ResourceHolderSupport {
+
 	private final ObjectContainer objectContainer;
 
-	/**
-	 *
-	 */
 	public ObjectContainerHolder(ObjectContainer container) {
 		objectContainer = container;
-
 	}
 
 	/**
