@@ -150,4 +150,21 @@
     </plugins>
   </reporting>
 
+  <distributionManagement>
+    <repository>
+      <id>de.oliverlietz.maven</id>
+      <url>ftp://maven.oliverlietz.de/</url>
+    </repository>
+  </distributionManagement>
+
+  <build>
+    <extensions>
+      <extension>
+        <groupId>org.apache.maven.wagon</groupId>
+        <artifactId>wagon-ftp</artifactId>
+        <version>1.0-beta-7</version>
+      </extension>
+    </extensions>
+  </build>
+
 </project>
