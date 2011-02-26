@@ -1,5 +1,5 @@
 /*
- * Copyright 2005-2009 the original author or authors.
+ * Copyright 2005-2011 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@ import java.util.Comparator;
 
 import org.springframework.dao.DataAccessException;
 
+import com.db4o.ObjectContainer;
 import com.db4o.ObjectSet;
 import com.db4o.ext.Db4oDatabase;
 import com.db4o.ext.Db4oUUID;
@@ -98,6 +99,8 @@ public interface Db4oOperations {
 	public ReflectClass[] knownClasses();
 
 	public Object lock();
+
+    public ObjectContainer openSession();
 
 	public <T> T peekPersisted(final T object, final int depth, final boolean committed);
 

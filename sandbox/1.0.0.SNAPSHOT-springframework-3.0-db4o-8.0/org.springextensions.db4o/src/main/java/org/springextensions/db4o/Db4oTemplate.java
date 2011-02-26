@@ -1,5 +1,5 @@
 /*
- * Copyright 2005-2009 the original author or authors.
+ * Copyright 2005-2011 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -412,6 +412,17 @@ public class Db4oTemplate extends Db4oAccessor implements Db4oOperations {
 			}
 		}, true);
 	}
+
+	/**
+	 * @see org.springextensions.db4o.Db4oOperations#openSession()
+	 */
+    public ObjectContainer openSession() {
+        return (ObjectContainer) execute(new Db4oCallback() {
+            public Object doInDb4o(ObjectContainer container) throws RuntimeException {
+                return ((ExtObjectContainer) container).openSession();
+            }
+        }, true);
+    }
 
 	/**
 	 * @see org.springextensions.db4o.Db4oOperations#peekPersisted(java.lang.Object, int, boolean)
