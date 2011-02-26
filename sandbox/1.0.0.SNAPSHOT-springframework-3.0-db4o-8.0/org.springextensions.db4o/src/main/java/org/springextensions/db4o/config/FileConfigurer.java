@@ -62,9 +62,12 @@ public class FileConfigurer {
         throw new UnsupportedOperationException();
     }
 
-    public void setGenerateVersionNumbers(ConfigScope configScope) {
-        // TODO
-        throw new UnsupportedOperationException();
+    /**
+     * @return
+     * @see com.db4o.config.FileConfiguration#generateCommitTimestamps(boolean)
+     */
+    public void setGenerateCommitTimestamps(boolean flag) {
+        fileConfiguration.generateCommitTimestamps(flag);
     }
 
     /**
