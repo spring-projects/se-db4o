@@ -57,6 +57,7 @@
   <modules>
     <module>org.springextensions.db4o</module>
     <module>org.springextensions.db4o-it-spring</module>
+    <module>org.springextensions.db4o-it-osgi</module>
   </modules>
 
   <dependencyManagement>
