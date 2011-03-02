@@ -22,19 +22,15 @@ import org.springframework.dao.UncategorizedDataAccessException;
  * which do not match the Spring DAO exception hierarchy.
  *
  * @author Costin Leau
- *
  */
-public class Db4oSystemException extends UncategorizedDataAccessException{
+public class Db4oSystemException extends UncategorizedDataAccessException {
 
-	public Db4oSystemException(String message, Throwable ex) {
-		super(message, ex);
-	}
+    public Db4oSystemException(String message, Throwable ex) {
+        super(message, ex);
+    }
 
-	/**
-	 *
-	 * @param ex
-	 */
-	public Db4oSystemException(Throwable ex) {
-		super("db4o access exception", ex);
-	}
+    public Db4oSystemException(Throwable ex) {
+        super("db4o access exception", ex);
+    }
+
 }

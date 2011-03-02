@@ -23,21 +23,17 @@ import com.db4o.ObjectContainer;
  * Db4o objectContainer holder support.
  *
  * @author Costin Leau
- *
  */
 public class ObjectContainerHolder extends ResourceHolderSupport {
 
-	private final ObjectContainer objectContainer;
+    private final ObjectContainer objectContainer;
 
-	public ObjectContainerHolder(ObjectContainer container) {
-		objectContainer = container;
-	}
+    public ObjectContainerHolder(ObjectContainer container) {
+        objectContainer = container;
+    }
 
-	/**
-	 * @return Returns the container.
-	 */
-	public ObjectContainer getObjectContainer() {
-		return objectContainer;
-	}
+    public ObjectContainer getObjectContainer() {
+        return objectContainer;
+    }
 
 }

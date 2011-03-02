@@ -58,6 +58,20 @@ public class Db4oTemplate extends Db4oAccessor implements Db4oOperations {
     }
 
     /**
+     * @param exposeNativeContainer The exposeNativeContainer to set.
+     */
+    public void setExposeNativeContainer(boolean exposeNativeContainer) {
+        this.exposeNativeContainer = exposeNativeContainer;
+    }
+
+    /**
+     * @return Returns the exposeNativeContainer.
+     */
+    public boolean isExposeNativeContainer() {
+        return exposeNativeContainer;
+    }
+
+    /**
      * @see org.springextensions.db4o.Db4oOperations#execute(org.springextensions.db4o.Db4oCallback)
      */
     public Object execute(Db4oCallback callback) throws DataAccessException {
@@ -74,11 +88,9 @@ public class Db4oTemplate extends Db4oAccessor implements Db4oOperations {
             Object result = callback.doInDb4o(container);
             // check out caching/query support
             return result;
-        }
-        catch (Db4oException ex) {
+        } catch (Db4oException ex) {
             throw convertDb4oAccessException(ex);
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             RuntimeException convEx = convertDb4oAccessException(ex);
             // it's user specific
             if (convEx instanceof Db4oSystemException)
@@ -615,20 +627,6 @@ public class Db4oTemplate extends Db4oAccessor implements Db4oOperations {
                 throw ex.getTargetException();
             }
         }
-    }
-
-    /**
-     * @return Returns the exposeNativeContainer.
-     */
-    public boolean isExposeNativeContainer() {
-        return exposeNativeContainer;
-    }
-
-    /**
-     * @param exposeNativeContainer The exposeNativeContainer to set.
-     */
-    public void setExposeNativeContainer(boolean exposeNativeContainer) {
-        this.exposeNativeContainer = exposeNativeContainer;
     }
 
 }

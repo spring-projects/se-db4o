@@ -1,5 +1,5 @@
 /*
- * Copyright 2005-2009 the original author or authors.
+ * Copyright 2005-2011 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,17 +24,18 @@ import com.db4o.ObjectContainer;
  * the db4o object container.
  *
  * @author Costin Leau
- *
+ * @author olli
  */
 public interface Db4oCallback {
 
     /**
      * Called by {@link Db4oTemplate#execute} within an active object container
      * {@link com.db4o.ObjectContainer}.
-     *
+     * <p/>
      * Allows for returning a result object created within the
      * callback, i.e. a domain object or a collection of domain
      * objects.
      */
-	public Object doInDb4o(ObjectContainer container) throws RuntimeException;
+    public Object doInDb4o(ObjectContainer container) throws RuntimeException;
+
 }

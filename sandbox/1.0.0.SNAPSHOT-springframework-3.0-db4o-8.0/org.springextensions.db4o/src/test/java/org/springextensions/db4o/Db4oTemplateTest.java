@@ -17,6 +17,13 @@ package org.springextensions.db4o;
 
 import java.io.IOException;
 
+import org.easymock.MockControl;
+import org.easymock.classextension.MockClassControl;
+import org.testng.AssertJUnit;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+
 import com.db4o.ObjectContainer;
 import com.db4o.ObjectSet;
 import com.db4o.ext.Db4oDatabase;
@@ -28,12 +35,6 @@ import com.db4o.query.Predicate;
 import com.db4o.query.Query;
 import com.db4o.reflect.ReflectClass;
 import com.db4o.reflect.generic.GenericReflector;
-import org.easymock.MockControl;
-import org.easymock.classextension.MockClassControl;
-import org.testng.AssertJUnit;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
 
 /**
  * Db4o Template tests.
@@ -74,6 +75,7 @@ public class Db4oTemplateTest {
     /*
       * Test method for 'org.springextensions.db4o.Db4oTemplate.execute(Db4oCallback)'
       */
+
     @Test
     public void testExecuteDb4oCallback() {
         final Object result = new Object();
@@ -108,6 +110,7 @@ public class Db4oTemplateTest {
     /*
       * Test method for 'org.springextensions.db4o.Db4oTemplate.activate(Object, int)'
       */
+
     @Test
     public void testActivate() {
         Object obj = new Object();
@@ -120,6 +123,7 @@ public class Db4oTemplateTest {
     /*
       * Test method for 'org.springextensions.db4o.Db4oTemplate.deactivate(Object, int)'
       */
+
     @Test
     public void testDeactivate() {
         Object obj = new Object();
@@ -132,6 +136,7 @@ public class Db4oTemplateTest {
     /*
       * Test method for 'org.springextensions.db4o.Db4oTemplate.delete(Object)'
       */
+
     @Test
     public void testDelete() {
         Object obj = new Object();
@@ -143,6 +148,7 @@ public class Db4oTemplateTest {
     /*
       * Test method for 'org.springextensions.db4o.Db4oTemplate.queryByExample(Object)'
       */
+
     @Test
     public void testQueryByExample() {
         Object obj = new Object();
@@ -156,6 +162,7 @@ public class Db4oTemplateTest {
     /*
       * Test method for 'org.springextensions.db4o.Db4oTemplate.query()'
       */
+
     public void testQuery() {
 
         MockControl queryCtrl = MockControl.createControl(Query.class);
@@ -171,6 +178,7 @@ public class Db4oTemplateTest {
     /*
       * Test method for 'org.springextensions.db4o.Db4oTemplate.query(Predicate)'
       */
+
     @Test
     public void testQueryPredicate() {
         Predicate predicate = new Predicate() {
@@ -191,6 +199,7 @@ public class Db4oTemplateTest {
     /*
       * Test method for 'org.springextensions.db4o.Db4oTemplate.store(Object)'
       */
+
     @Test
     public void testStoreObject() {
         Object obj = new Object();
@@ -203,6 +212,7 @@ public class Db4oTemplateTest {
     /*
       * Test method for 'org.springextensions.db4o.Db4oTemplate.backup(String)'
       */
+
     @Test
     public void testBackup() throws IOException {
         String backup = "";
@@ -216,6 +226,7 @@ public class Db4oTemplateTest {
     /*
       * Test method for 'org.springextensions.db4o.Db4oTemplate.bind(Object, long)'
       */
+
     @Test
     public void testBind() {
         Object obj = new Object();
@@ -230,6 +241,7 @@ public class Db4oTemplateTest {
     /*
       * Test method for 'org.springextensions.db4o.Db4oTemplate.getByID(long)'
       */
+
     @Test
     public void testGetByID() {
         Object result = new Object();
@@ -244,6 +256,7 @@ public class Db4oTemplateTest {
     /*
       * Test method for 'org.springextensions.db4o.Db4oTemplate.getByUUID(Db4oUUID)'
       */
+
     @Test
     public void testGetByUUID() {
         long id = 1234l;
@@ -260,6 +273,7 @@ public class Db4oTemplateTest {
     /*
       * Test method for 'org.springextensions.db4o.Db4oTemplate.getID(Object)'
       */
+
     @Test
     public void testGetID() {
         long id = 1234l;
@@ -275,6 +289,7 @@ public class Db4oTemplateTest {
     /*
       * Test method for 'org.springextensions.db4o.Db4oTemplate.getObjectInfo(Object)'
       */
+
     @Test
     public void testGetObjectInfo() {
 
@@ -293,6 +308,7 @@ public class Db4oTemplateTest {
     /*
       * Test method for 'org.springextensions.db4o.Db4oTemplate.identity()'
       */
+
     @Test
     public void testIdentity() {
         Db4oDatabase result = new Db4oDatabase();
@@ -305,6 +321,7 @@ public class Db4oTemplateTest {
     /*
       * Test method for 'org.springextensions.db4o.Db4oTemplate.isActive(Object)'
       */
+
     @Test
     public void testIsActive() {
         boolean result = false;
@@ -319,6 +336,7 @@ public class Db4oTemplateTest {
     /*
       * Test method for 'org.springextensions.db4o.Db4oTemplate.isCached(long)'
       */
+
     public void testIsCached() {
         boolean result = false;
         long id = 12345l;
@@ -331,6 +349,7 @@ public class Db4oTemplateTest {
     /*
       * Test method for 'org.springextensions.db4o.Db4oTemplate.isClosed()'
       */
+
     @Test
     public void testIsClosed() {
         boolean result = false;
@@ -343,6 +362,7 @@ public class Db4oTemplateTest {
     /*
       * Test method for 'org.springextensions.db4o.Db4oTemplate.isStored(Object)'
       */
+
     public void testIsStored() {
         boolean result = false;
         Object obj = new Object();
@@ -355,6 +375,7 @@ public class Db4oTemplateTest {
     /*
       * Test method for 'org.springextensions.db4o.Db4oTemplate.knownClasses()'
       */
+
     @Test
     public void testKnownClasses() {
         ReflectClass[] result = new ReflectClass[]{};
@@ -367,6 +388,7 @@ public class Db4oTemplateTest {
     /*
       * Test method for 'org.springextensions.db4o.Db4oTemplate.lock()'
       */
+
     @Test
     public void testLock() {
         Object lock = new Object();
@@ -379,6 +401,7 @@ public class Db4oTemplateTest {
     /*
       * Test method for 'org.springextensions.db4o.Db4oTemplate.peekPersisted(Object, int, boolean)'
       */
+
     @Test
     public void testPeekPersisted() {
         Object obj = new Object();
@@ -395,6 +418,7 @@ public class Db4oTemplateTest {
     /*
       * Test method for 'org.springextensions.db4o.Db4oTemplate.purge()'
       */
+
     @Test
     public void testPurge() {
         container.purge();
@@ -405,6 +429,7 @@ public class Db4oTemplateTest {
     /*
       * Test method for 'org.springextensions.db4o.Db4oTemplate.purge(Object)'
       */
+
     @Test
     public void testPurgeObject() {
         Object obj = new Object();
@@ -417,6 +442,7 @@ public class Db4oTemplateTest {
     /*
       * Test method for 'org.springextensions.db4o.Db4oTemplate.reflector()'
       */
+
     @Test
     public void testReflector() {
         MockControl refCtrl = MockClassControl.createControl(GenericReflector.class);
@@ -431,6 +457,7 @@ public class Db4oTemplateTest {
     /*
       * Test method for 'org.springextensions.db4o.Db4oTemplate.refresh(Object, int)'
       */
+
     @Test
     public void testRefresh() {
         Object obj = new Object();
@@ -444,6 +471,7 @@ public class Db4oTemplateTest {
     /*
       * Test method for 'org.springextensions.db4o.Db4oTemplate.releaseSemaphore(String)'
       */
+
     @Test
     public void testReleaseSemaphore() {
         String name = "";
@@ -456,6 +484,7 @@ public class Db4oTemplateTest {
     /*
       * Test method for 'org.springextensions.db4o.Db4oTemplate.store(Object, int)'
       */
+
     @Test
     public void testStoreObjectInt() {
         Object obj = new Object();
@@ -469,6 +498,7 @@ public class Db4oTemplateTest {
     /*
       * Test method for 'org.springextensions.db4o.Db4oTemplate.setSemaphore(String, int)'
       */
+
     @Test
     public void testSetSemaphore() {
         boolean result = false;
@@ -484,6 +514,7 @@ public class Db4oTemplateTest {
     /*
       * Test method for 'org.springextensions.db4o.Db4oTemplate.storedClass(Object)'
       */
+
     @Test
     public void testStoredClass() {
         MockControl classCtrl = MockControl.createControl(StoredClass.class);
@@ -499,6 +530,7 @@ public class Db4oTemplateTest {
     /*
       * Test method for 'org.springextensions.db4o.Db4oTemplate.storedClasses()'
       */
+
     @Test
     public void testStoredClasses() {
         StoredClass[] result = new StoredClass[]{};
@@ -513,6 +545,7 @@ public class Db4oTemplateTest {
     /*
       * Test method for 'org.springextensions.db4o.Db4oTemplate.version()'
       */
+
     @Test
     public void testVersion() {
         long result = 1234;
@@ -525,6 +558,7 @@ public class Db4oTemplateTest {
     /*
       * Test method for 'org.springextensions.db4o.Db4oAccessor.afterPropertiesSet()'
       */
+
     @Test
     public void testAfterPropertiesSet() {
         try {
