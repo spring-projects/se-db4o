@@ -43,6 +43,7 @@ import com.db4o.reflect.generic.GenericReflector;
  * Db4o template.
  *
  * @author Costin Leau
+ * @author olli
  */
 public class Db4oTemplate extends Db4oAccessor implements Db4oOperations {
 

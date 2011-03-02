@@ -32,6 +32,10 @@ import com.db4o.query.QueryComparator;
 import com.db4o.reflect.ReflectClass;
 import com.db4o.reflect.generic.GenericReflector;
 
+/**
+ * @author Costin Leau
+ * @author olli
+ */
 public interface Db4oOperations {
 
     public Object execute(Db4oCallback callback) throws DataAccessException;
