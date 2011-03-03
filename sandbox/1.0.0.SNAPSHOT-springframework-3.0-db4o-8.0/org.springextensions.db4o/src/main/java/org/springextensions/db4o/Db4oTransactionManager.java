@@ -85,8 +85,7 @@ public class Db4oTransactionManager extends AbstractPlatformTransactionManager i
         return ((Db4oTransactionObject) transaction).hasTransaction();
     }
 
-    protected void doBegin(Object transaction, TransactionDefinition transactionDefinition)
-            throws TransactionException {
+    protected void doBegin(Object transaction, TransactionDefinition transactionDefinition) throws TransactionException {
         if (transactionDefinition.getIsolationLevel() != TransactionDefinition.ISOLATION_DEFAULT) {
             throw new InvalidIsolationLevelException("Db4o does not support an isolation level concept");
         }
@@ -146,8 +145,7 @@ public class Db4oTransactionManager extends AbstractPlatformTransactionManager i
         if (TransactionSynchronizationManager.hasResource(getObjectContainer())) {
             TransactionSynchronizationManager.unbindResource(getObjectContainer());
         }
-        TransactionSynchronizationManager.bindResource(getObjectContainer(),
-                resourcesHolder.getObjectContainerHolder());
+        TransactionSynchronizationManager.bindResource(getObjectContainer(), resourcesHolder.getObjectContainerHolder());
     }
 
     protected void doCommit(DefaultTransactionStatus status) {
@@ -171,8 +169,7 @@ public class Db4oTransactionManager extends AbstractPlatformTransactionManager i
         } finally {
             try {
                 // TODO: refresh the container somehow
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 // we already throw an exception (hold back this one).
             }
         }
