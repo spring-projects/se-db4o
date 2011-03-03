@@ -175,9 +175,9 @@ public class Db4oTransactionManager extends AbstractPlatformTransactionManager i
         }
         try {
             txObject.getObjectContainerHolder().getObjectContainer().rollback();
-        }        catch (Exception ex) {
+        } catch (Exception ex) {
             throw new TransactionSystemException("Could not roll back db4o transaction", ex);
-        }        finally {
+        } finally {
             try {
                 // TODO: refresh the container somehow
             }
