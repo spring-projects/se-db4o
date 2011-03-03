@@ -15,8 +15,6 @@
  */
 package org.springextensions.db4o;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.dao.DataAccessException;
 
@@ -35,8 +33,6 @@ import com.db4o.ObjectContainer;
 public abstract class Db4oAccessor implements InitializingBean {
 
     private ObjectContainer objectContainer;
-
-    protected final Log logger = LogFactory.getLog(getClass());
 
     public void setObjectContainer(ObjectContainer objectContainer) {
         this.objectContainer = objectContainer;

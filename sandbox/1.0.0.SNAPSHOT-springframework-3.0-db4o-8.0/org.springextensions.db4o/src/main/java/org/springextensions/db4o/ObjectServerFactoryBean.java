@@ -25,8 +25,8 @@ import com.db4o.Db4o;
 import com.db4o.ObjectServer;
 import com.db4o.cs.Db4oClientServer;
 import com.db4o.cs.config.ServerConfiguration;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
 import org.springframework.util.ObjectUtils;
 
@@ -50,7 +50,7 @@ public class ObjectServerFactoryBean { // implements FactoryBean<ObjectServer> {
 
     private Properties users;
 
-    private final Log log = LogFactory.getLog(ObjectServerFactoryBean.class);
+    private final Logger logger = LoggerFactory.getLogger(ObjectServerFactoryBean.class);
 
     public ObjectServerFactoryBean() {
     }
@@ -110,17 +110,17 @@ public class ObjectServerFactoryBean { // implements FactoryBean<ObjectServer> {
             throw new IllegalArgumentException("database file is required");
         }
 
-        log.info("database file is " + databaseFile.getFile().getAbsolutePath());
+        logger.info("database file is {}", databaseFile.getFile().getAbsolutePath());
 
         if (serverConfiguration == null) {
             server = Db4oClientServer.openServer(databaseFile.getFile().getAbsolutePath(), port);
         } else {
-            log.info("using configuration: server");
+            logger.info("using configuration: server");
             server = Db4oClientServer.openServer(serverConfiguration, databaseFile.getFile().getAbsolutePath(), port);
         }
 
-        log.info("opened object server " + ObjectUtils.getIdentityHexString(server) + " at port " + server.ext().port());
-        log.info(Db4o.version());
+        logger.info("opened object server {} at port {}", ObjectUtils.getIdentityHexString(server), server.ext().port());
+        logger.info(Db4o.version());
 
         if (users != null) {
             for (Object o : users.entrySet()) {
@@ -128,14 +128,14 @@ public class ObjectServerFactoryBean { // implements FactoryBean<ObjectServer> {
                 String username = (String) entry.getKey();
                 String password = (String) entry.getValue();
                 server.grantAccess(username, password);
-                log.debug("access granted to user '" + username + "' with password '" + ObjectServerUtils.maskString(password) + "'");
+                logger.debug("access granted to user '{}' with password '{}'", username, ObjectServerUtils.maskString(password));
             }
         }
     }
 
     @PreDestroy
     public void destroy() throws Exception {
-        log.info("closing object server " + ObjectUtils.getIdentityHexString(server));
+        logger.info("closing object server {}", ObjectUtils.getIdentityHexString(server));
         server.close();
     }
 

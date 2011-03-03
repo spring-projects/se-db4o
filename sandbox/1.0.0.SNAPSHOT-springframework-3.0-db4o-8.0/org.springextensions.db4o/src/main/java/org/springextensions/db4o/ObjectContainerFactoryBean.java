@@ -25,8 +25,8 @@ import com.db4o.ObjectServer;
 import com.db4o.config.EmbeddedConfiguration;
 import com.db4o.cs.Db4oClientServer;
 import com.db4o.cs.config.ClientConfiguration;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.FactoryBeanNotInitializedException;
 import org.springframework.util.ObjectUtils;
 
@@ -72,7 +72,7 @@ public class ObjectContainerFactoryBean { // implements FactoryBean<ObjectContai
 
     private ClientConfiguration clientConfiguration;
 
-    private final Log log = LogFactory.getLog(ObjectContainerFactoryBean.class);
+    private final Logger logger = LoggerFactory.getLogger(ObjectContainerFactoryBean.class);
 
     public void setName(String name) {
         this.name = name;
@@ -141,12 +141,12 @@ public class ObjectContainerFactoryBean { // implements FactoryBean<ObjectContai
         } else {
             throw new IllegalArgumentException("mandatory fields are not set: database name or embedded database server or remote database server (hostname, port, username)");
         }
-        log.info(Db4o.version());
+        logger.info(Db4o.version());
     }
 
     @PreDestroy
     public void destroy() {
-        log.info("closing object container " + ObjectUtils.getIdentityHexString(container));
+        logger.info("closing object container {}", ObjectUtils.getIdentityHexString(container));
         container.close();
     }
 
@@ -155,16 +155,16 @@ public class ObjectContainerFactoryBean { // implements FactoryBean<ObjectContai
         if (embeddedConfiguration == null) {
             container = Db4oEmbedded.openFile(name);
         } else {
-            log.info("using configuration: embedded");
+            logger.info("using configuration: embedded");
             container = Db4oEmbedded.openFile(embeddedConfiguration, name);
         }
-        log.info("embedded container opened: " + ObjectUtils.getIdentityHexString(container));
+        logger.info("embedded container opened: {}", ObjectUtils.getIdentityHexString(container));
         return container;
     }
 
     protected ObjectContainer openEmbeddedClientContainer(ObjectServer server) {
         ObjectContainer container = server.openClient();
-        log.info("embedded client container opened: " + ObjectUtils.getIdentityHexString(container));
+        logger.info("embedded client container opened: {}", ObjectUtils.getIdentityHexString(container));
         return container;
     }
 
@@ -173,10 +173,10 @@ public class ObjectContainerFactoryBean { // implements FactoryBean<ObjectContai
         if (clientConfiguration == null) {
             container = Db4oClientServer.openClient(hostname, port, username, password);
         } else {
-            log.info("using configuration: client");
+            logger.info("using configuration: client");
             container = Db4oClientServer.openClient(clientConfiguration, hostname, port, username, password);
         }
-        log.info("remote client container opened: " + ObjectUtils.getIdentityHexString(container));
+        logger.info("remote client container opened: {}", ObjectUtils.getIdentityHexString(container));
         return container;
     }
 

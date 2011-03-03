@@ -15,6 +15,8 @@
  */
 package org.springextensions.db4o;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.transaction.CannotCreateTransactionException;
 import org.springframework.transaction.InvalidIsolationLevelException;
@@ -49,6 +51,8 @@ import com.db4o.ObjectContainer;
 public class Db4oTransactionManager extends AbstractPlatformTransactionManager implements InitializingBean {
 
     private ObjectContainer objectContainer;
+
+    private final Logger logger = LoggerFactory.getLogger(Db4oTransactionManager.class);
 
     /**
      * Create a new Db4oTransactionManager instance.
@@ -94,12 +98,7 @@ public class Db4oTransactionManager extends AbstractPlatformTransactionManager i
             if (txObject.getObjectContainerHolder() == null) {
                 // use the given container
                 container = getObjectContainer();
-
-                if (logger.isDebugEnabled()) {
-                    logger.debug("Using given objectContainer ["
-                            + container
-                            + "] for the current thread transaction");
-                }
+                logger.debug("Using given objectContainer [{}] for the current thread transaction", container);
                 txObject.setObjectContainerHolder(new ObjectContainerHolder(container));
             }
 
@@ -153,11 +152,7 @@ public class Db4oTransactionManager extends AbstractPlatformTransactionManager i
 
     protected void doCommit(DefaultTransactionStatus status) {
         Db4oTransactionObject txObject = (Db4oTransactionObject) status.getTransaction();
-        if (status.isDebug()) {
-            logger.debug("Committing db4o transaction on object container ["
-                    + txObject.getObjectContainerHolder()
-                    + "]");
-        }
+        logger.debug("Committing db4o transaction on object container [{}]", txObject.getObjectContainerHolder().getObjectContainer());
         try {
             txObject.getObjectContainerHolder().getObjectContainer().commit();
         } catch (Exception ex) {
@@ -168,11 +163,7 @@ public class Db4oTransactionManager extends AbstractPlatformTransactionManager i
 
     protected void doRollback(DefaultTransactionStatus status) {
         Db4oTransactionObject txObject = (Db4oTransactionObject) status.getTransaction();
-        if (status.isDebug()) {
-            logger.debug("Rolling back db4o transaction on object container ["
-                    + txObject.getObjectContainerHolder().getObjectContainer()
-                    + "]");
-        }
+        logger.debug("Rolling back db4o transaction on object container [{}]", txObject.getObjectContainerHolder().getObjectContainer());
         try {
             txObject.getObjectContainerHolder().getObjectContainer().rollback();
         } catch (Exception ex) {
@@ -189,11 +180,7 @@ public class Db4oTransactionManager extends AbstractPlatformTransactionManager i
 
     protected void doSetRollbackOnly(DefaultTransactionStatus status) {
         Db4oTransactionObject txObject = (Db4oTransactionObject) status.getTransaction();
-        if (status.isDebug()) {
-            logger.debug("Setting db4o transaction on object container ["
-                    + txObject.getObjectContainerHolder().getObjectContainer()
-                    + "] rollback-only");
-        }
+        logger.debug("Setting db4o transaction on object container [{}] rollback-only", txObject.getObjectContainerHolder().getObjectContainer());
         txObject.setRollbackOnly();
     }
 
