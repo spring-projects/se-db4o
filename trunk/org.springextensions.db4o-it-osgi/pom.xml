@@ -19,7 +19,7 @@
   <description>OSGi Integration Tests for Spring db4o Extension</description>
 
   <properties>
-    <org.ops4j.pax.exam.version>3.0.0.M3</org.ops4j.pax.exam.version>
+    <org.ops4j.pax.exam.version>3.0.0</org.ops4j.pax.exam.version>
   </properties>
 
   <dependencies>
@@ -65,7 +65,7 @@
     <!-- testing -->
     <dependency>
       <groupId>org.ops4j.pax.exam</groupId>
-      <artifactId>pax-exam-container-native</artifactId>
+      <artifactId>pax-exam-container-forked</artifactId>
       <version>${org.ops4j.pax.exam.version}</version>
       <scope>test</scope>
     </dependency>
@@ -79,6 +79,12 @@
       <groupId>org.ops4j.pax.exam</groupId>
       <artifactId>pax-exam-testng</artifactId>
       <version>${org.ops4j.pax.exam.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.ops4j.pax.url</groupId>
+      <artifactId>pax-url-wrap</artifactId>
+      <version>1.5.0</version>
       <scope>test</scope>
     </dependency>
     <dependency>

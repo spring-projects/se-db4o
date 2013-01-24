@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2012 the original author or authors.
+ * Copyright 2010-2013 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,6 +29,7 @@ import org.testng.annotations.Test;
 import static org.ops4j.pax.exam.CoreOptions.bundle;
 import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
 import static org.ops4j.pax.exam.CoreOptions.options;
+import static org.ops4j.pax.exam.CoreOptions.wrappedBundle;
 
 /**
  * @author olli
@@ -37,11 +38,11 @@ import static org.ops4j.pax.exam.CoreOptions.options;
 public class BlueprintIT {
 
     @Inject
-    @Filter(timeout = 5000)
+    @Filter(timeout = 50000)
     private Db4oOperations db4oOperations;
 
     @Inject
-    @Filter(timeout = 5000)
+    @Filter(timeout = 50000)
     private EventRegistry eventRegistry;
 
     @Configuration
@@ -55,7 +56,7 @@ public class BlueprintIT {
             mavenBundle("org.springframework", "org.springframework.transaction", "3.0.0.RELEASE"),
             // db4o
             mavenBundle("com.db4o", "db4o-full-java5", "8.1.209.15862"),
-            mavenBundle("org.apache.ant", "com.springsource.org.apache.tools.ant", "1.7.1"),
+            wrappedBundle(mavenBundle("org.apache.ant", "ant", "1.8.4")),
             // Spring db4o
             // mavenBundle("org.springextensions.db4o", "org.springextensions.db4o", "1.0.0.BUILD-SNAPSHOT"),
             bundle("file:../org.springextensions.db4o/target/org.springextensions.db4o-1.0.0.BUILD-SNAPSHOT.jar"),
@@ -63,9 +64,9 @@ public class BlueprintIT {
             mavenBundle("org.apache.aries.blueprint", "org.apache.aries.blueprint", "1.0.0"),
             mavenBundle("org.apache.aries.proxy", "org.apache.aries.proxy", "1.0.0"),
             mavenBundle("org.apache.aries", "org.apache.aries.util", "1.0.0"),
-            mavenBundle("org.objectweb.asm", "com.springsource.org.objectweb.asm", "3.2.0"),
-            mavenBundle("org.objectweb.asm", "com.springsource.org.objectweb.asm.commons", "3.2.0"),
-            mavenBundle("org.objectweb.asm", "com.springsource.org.objectweb.asm.tree", "3.2.0")
+            mavenBundle("org.ow2.asm", "asm", "4.1"),
+            mavenBundle("org.ow2.asm", "asm-commons", "4.1"),
+            mavenBundle("org.ow2.asm", "asm-tree", "4.1")
         );
     }
 
